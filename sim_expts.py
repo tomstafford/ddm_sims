@@ -26,7 +26,8 @@ n_experiments = 50  # Number of simulated experiments  - make this arbitrary lar
 trial_name = 'ppt_test' # Specfies what each trial is running - e.g. altered number of participants
 trials = 20 # trial per participants
 n_subjects = [10,20,30,100] # n_participants in each experiment
-params={'v':1.0, 'a':2.0, 't':0.1, 'sv':0.0, 'z':0.5, 'sz':0.0, 'st':0.0} # HDDM Parameters
+intersubj_drift_var=0.1 # std
+params={'v':0.5, 'a':1.0, 't':0.1, 'sv':0.0, 'z':0.5, 'sz':0.0, 'st':0.0} # HDDM Parameters
 # HDDM Parameters:
     # v = Drift rate        # a = Boundary separation
     # t = Non-decision time # z = protent response bias 
@@ -44,7 +45,7 @@ def ppt_ddm_func(trial_name,params,trials,n_subjects):
     with the specified parameters
     '''
     import hddm # Import the HDDM Module 
-    data,params = hddm.generate.gen_rand_data({trial_name:params},size=trials,subjs=n_subjects)
+    data,params = hddm.generate.gen_rand_data({trial_name:params},size=trials,subjs=n_subjects,subj_noise={'v':intersubj_drift_var})
     '''
     The imported hddm allows for random data generation depending
     on the specified arguments (and parameters). Returns a data array.
@@ -55,9 +56,11 @@ def ppt_ddm_func(trial_name,params,trials,n_subjects):
 Main Loop
 '''
 
-stim_A = 0.4 # Stimulus A - Drift Rate = 0.2
-stim_B = 0.7 # Stimulus B - Drift Rate = 0.6
+stim_A = 0.2 # Stimulus A - Drift Rate = 0.2
+stim_B = 0.3 # Stimulus B - Drift Rate = 0.6
 stims = [stim_A,stim_B] # Drift Rate depends on the Stimulus specified.
+
+cohens_d=(stims[0]-stims[1])/intersubj_drift_var
 
 # dataframe for the experiments conducted for each sample size, and the significance value for that sample size. 
 store_apdf=pd.DataFrame(columns=['experiment_number','sample_size','p_value_RTs','p_value_Acc','p_value_Drift'],index=range(n_experiments*len(n_subjects)))
@@ -142,5 +145,5 @@ for ppts in n_subjects: # different sample sizes for experiments
     
 
 end = time.time() #record finish time
-print("TOOK " + str(round(end - start,3)) + " SECONDS \n\n") #TOOK 5046.116 SECONDS 
+print("TOOK " + str(round(end - start,3)) + " SECONDS \n\n") #TOOK 5046.116 SECONDS = 84 minnutes
 
