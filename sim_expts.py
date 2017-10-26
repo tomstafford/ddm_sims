@@ -39,18 +39,13 @@ def ppt_ddm_func(trial_name,params,trials,n_subjects,intersubj_drift_var):
 Main Loop
 '''
 
-def do_experiment(expt):
-    ppts = 10 #TEMP FUDGE
-    n_experiments = 50  # Number of simulated experiments  - make this arbitrary large for final run
-    n_subjects = [10,20,30,100] # n_participants in each experiment
-    stim_A = 0.2 # Stimulus A - Drift Rate = 0.2
-    stim_B = 0.3 # Stimulus B - Drift Rate = 0.6
+def do_experiment(ppts,n_experiments,stim_A,stim_B,expt):
+
     stims = [stim_A,stim_B] # Drift Rate depends on the Stimulus specified.
     intersubj_drift_var=0.1 # std
     cohens_d=(stims[0]-stims[1])/intersubj_drift_var
     trial_name = 'ppt_test' # Specfies what each trial is running - e.g. altered number of participants
     trials = 20 # trial per participants
-    n_experiments = 50  # Number of simulated experiments  - make this arbitrary large for final run
     params={'v':0.5, 'a':1.0, 't':0.1, 'sv':0.0, 'z':0.5, 'sz':0.0, 'st':0.0} # HDDM Parameters
     # HDDM Parameters:
         # v = Drift rate        # a = Boundary separation
@@ -59,7 +54,7 @@ def do_experiment(expt):
     n_samples=100 #for HDDM fitting, put this to 5000 for final run
 
     # dataframe for the experiments conducted for each sample size, and the significance value for that sample size.
-    store_apdf=pd.DataFrame(columns=['experiment_number','sample_size','p_value_RTs','p_value_Acc','p_value_Drift'],index=range(n_experiments*len(n_subjects)))
+    # store_apdf=pd.DataFrame(columns=['experiment_number','sample_size','p_value_RTs','p_value_Acc','p_value_Drift'],index=range(n_experiments*len(n_subjects)))
 
     store_df=pd.DataFrame(columns=['mean_rtA','mean_rtB','prop_acc_A','prop_acc_B','driftA','driftB'],index=range(ppts))
     for i,drift in enumerate(stims):
