@@ -39,19 +39,16 @@ def ppt_ddm_func(trial_name,params,trials,n_subjects,intersubj_drift_var):
 Main Loop
 '''
 
-def do_experiment(ppts,n_experiments,stim_A,stim_B,expt):
+def do_experiment(ppts,n_experiments,stim_A,stim_B,intersubj_drift_var,n_samples,trial_name,trials,expt):
 
     stims = [stim_A,stim_B] # Drift Rate depends on the Stimulus specified.
-    intersubj_drift_var=0.1 # std
+
     cohens_d=(stims[0]-stims[1])/intersubj_drift_var
-    trial_name = 'ppt_test' # Specfies what each trial is running - e.g. altered number of participants
-    trials = 20 # trial per participants
     params={'v':0.5, 'a':1.0, 't':0.1, 'sv':0.0, 'z':0.5, 'sz':0.0, 'st':0.0} # HDDM Parameters
     # HDDM Parameters:
         # v = Drift rate        # a = Boundary separation
         # t = Non-decision time # z = protent response bias
         # Inter-trial variability in v, z and t all set to 0 (No variability)
-    n_samples=100 #for HDDM fitting, put this to 5000 for final run
 
     # dataframe for the experiments conducted for each sample size, and the significance value for that sample size.
     # store_apdf=pd.DataFrame(columns=['experiment_number','sample_size','p_value_RTs','p_value_Acc','p_value_Drift'],index=range(n_experiments*len(n_subjects)))
@@ -99,6 +96,6 @@ def do_experiment(ppts,n_experiments,stim_A,stim_B,expt):
     # Running a t-test for the mean proportion of accurate responses for both stimuli (t2,p2)
     t3,p3 = scipy.stats.ttest_ind(store_df['driftA'],store_df['driftB'])
     # Running a t-test for the mean proportion of accurate responses for both stimuli (t2,p2)
-
+    print('\n')
     print([expt,ppts,p,p2,p3])
     return([expt,ppts,p,p2,p3])
