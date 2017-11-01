@@ -1,7 +1,7 @@
 from multiprocessing import Pool
 from sim_expts import *
 from functools import partial
-pool = Pool(4)
+pool = Pool(16)
 
 '''
 Define Parameters
