@@ -93,7 +93,8 @@ def do_experiment(ppts,n_experiments,stim_A,stim_B,intersubj_drift_var,n_samples
     store_df['driftB']=stats.loc[stats.index.str.contains('v_subj\(2.0\)'),'mean'].values
 
     if expt == 0:
-        store_df.to_csv('audit_mean_data.csv')  # Save generated data for auditing
+        store_df.to_csv('audit_mean_data.csv')       # Save generated data for auditing
+        mydata.to_csv('audit_single_expt_data.csv')  # store result first time we do this, for auditing
 
     # t-test not appropriate for hierarchically generated data, but fix this later
     t,p = scipy.stats.ttest_ind(store_df['mean_rtA'],store_df['mean_rtB'])
