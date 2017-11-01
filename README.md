@@ -3,7 +3,8 @@
 
 **Running the simulation**
 
-To run the simulation, do
+To run the simulation, edit `run_simulation.py` so that you request a `Pool` size that's suitable for your machine.
+Then do,
 
 ```
 python run_simulation.py
@@ -15,7 +16,7 @@ There are a bunch of warnings.  If you are happy to ignore them, run it with
 python -W ignore run_simulation.py
 ```
 
-** Setting up the Conda environment on ShARC **
+**Setting up the Conda environment on ShARC**
 
 Before we can run hddm on ShARC, you need to install the conda environment in your home directory.
 
@@ -40,7 +41,7 @@ source activate hddm
 conda install -c pymc hddm
 ```
 
-** Running the simulation on ShARC **
+**Running the simulation on ShARC**
 
 To run the simulation currently on GitHub
 
@@ -70,7 +71,7 @@ The parallelisation scheme currently used is limited to the number of cores avai
 
 We could explore additional schemes for better scaling.
 
-** Parallelisation timings (small job)**
+**Parallelisation timings (small job)**
 
 With the following parameters
 
@@ -99,7 +100,7 @@ They are more powerful than anything else on ShARC
 
 * 32 processes -  122.661 seconds (14.7x faster than the Mac using 1 core)
 
-** Parallelisation timings (large job)**
+**Parallelisation timings (large job)**
 
 ```
 n_experiments = 100  # Number of simulated experiments  - make this arbitrary large for final run
