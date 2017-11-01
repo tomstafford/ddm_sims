@@ -27,7 +27,6 @@ def ppt_ddm_func(trial_name,params,trials,n_subjects,intersubj_drift_var):
     This function simulates data using the DDM model (and the HDDM toolbox)
     with the specified parameters
     '''
-    import hddm # Import the HDDM Module
     data,params = hddm.generate.gen_rand_data({trial_name:params},size=trials,subjs=n_subjects,subj_noise={'v':intersubj_drift_var})
     '''
     The imported hddm allows for random data generation depending
@@ -39,7 +38,11 @@ def ppt_ddm_func(trial_name,params,trials,n_subjects,intersubj_drift_var):
 Main Loop
 '''
 
-def do_experiment(ppts,n_experiments,stim_A,stim_B,intersubj_drift_var,n_samples,trial_name,trials,expt):
+def do_experiment(ppts,n_experiments,stim_A,stim_B,intersubj_drift_var,n_samples,trial_name,trials,start_seed,expt):
+
+    # Every experiment has its own random seed
+    random_seed = start_seed + expt
+    np.random.seed(random_seed)
 
     stims = [stim_A,stim_B] # Drift Rate depends on the Stimulus specified.
 
@@ -56,7 +59,7 @@ def do_experiment(ppts,n_experiments,stim_A,stim_B,intersubj_drift_var,n_samples
     store_df=pd.DataFrame(columns=['mean_rtA','mean_rtB','prop_acc_A','prop_acc_B','driftA','driftB'],index=range(ppts))
     for i,drift in enumerate(stims):
         params={'v':drift, 'a':2, 't':0.1, 'sv':0, 'z':.5, 'sz':0, 'st':0} # Parameters specified again
-        data=ppt_ddm_func(trial_name,params,trials,ppts,intersubj_drift_var)
+        data = ppt_ddm_func(trial_name,params,trials,ppts,intersubj_drift_var)
         if i==0:
             RT_col='mean_rtA'
             ac_col='prop_acc_A'
@@ -89,6 +92,9 @@ def do_experiment(ppts,n_experiments,stim_A,stim_B,intersubj_drift_var,n_samples
     store_df['driftA']=stats.loc[stats.index.str.contains('v_subj\(1.0\)'),'mean'].values
     store_df['driftB']=stats.loc[stats.index.str.contains('v_subj\(2.0\)'),'mean'].values
 
+    if expt == 0:
+        store_df.to_csv('audit_mean_data.csv')  # Save generated data for auditing
+
     # t-test not appropriate for hierarchically generated data, but fix this later
     t,p = scipy.stats.ttest_ind(store_df['mean_rtA'],store_df['mean_rtB'])
     # Running a t-test for the mean reaction times of both stimulu (t,p)
@@ -98,4 +104,4 @@ def do_experiment(ppts,n_experiments,stim_A,stim_B,intersubj_drift_var,n_samples
     # Running a t-test for the mean proportion of accurate responses for both stimuli (t2,p2)
     print('\n')
     print([expt,ppts,p,p2,p3])
-    return([expt,ppts,p,p2,p3])
+    return(pd.DataFrame([[expt,ppts,p,p2,p3,random_seed]],index = [expt],columns=['experiment_number','sample_size','p_value_RTs','p_value_Acc','p_value_Drift','seed']))
