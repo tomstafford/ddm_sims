@@ -93,6 +93,12 @@ There seems to be very little to gain from oversubscribing the cores.
 * 4 processes - 584 seconds
 * 8 processes - 567 seconds   (3.1x speedup)
 
+**16 core node on ShARC**
+
+These are the standard nodes -- available to everyone.
+
+* 16 processes 208.452 seconds
+
 **32 core node on ShARC**
 
 Note that this is only available to people who have contributed to the [RSE group's premium queue](http://rse.shef.ac.uk/resources/hpc/premium-hpc/).
