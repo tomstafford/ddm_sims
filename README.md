@@ -119,4 +119,5 @@ trial_name = 'ppt_test' # Specfies what each trial is running - e.g. altered num
 trials = 20 # trial per participants
 ```
 
-**Timings to come**
+* 32 processes - 6570 seconds
+
