@@ -1,35 +1,66 @@
 from multiprocessing import Pool
 from sim_expts import *
 from functools import partial
-pool = Pool(16)
+pool = Pool(32) #how many processors to use, 4 in the VM, 32 on the RSE Sharc cluster
+from sendemail import send_mail #for sending email
 
 '''
 Define Parameters
 '''
 
-n_experiments = 50  # Number of simulated experiments  - make this arbitrary large for final run
-n_subjects = [10,20,30,100] # n_participants in each experiment
-stim_A = 0.2 # Stimulus A - Drift Rate = 0.2
-stim_B = 0.3 # Stimulus B - Drift Rate = 0.6
-intersubj_drift_var=0.1 # std
-n_samples = 100 #for HDDM fitting, put this to 5000 for final run
-trial_name = 'ppt_test' # Specfies what each trial is running - e.g. altered number of participants
+'''experiment parameters'''
+trial_names = ['groupA','groupB'] # Specfies what each trial is running - e.g. altered number of participants
+n_subjects = [10,20,30,40,80,120] # n_participants in each experiment
+
+n_experiments = 250  # Number of simulated experiments  - make this arbitrary large for final run
+n_samples = 200  #for HDDM fitting, put this to 5000 for final run
+
 trials = 20 # trial per participants
+
+'''HDDM parameters'''
+    # HDDM Parameters:
+        # v = Drift rate        # a = Boundary separation
+        # t = Non-decision time # z = protent response bias
+        # Inter-trial variability in v, z and t all set to 0 (No variability)
+''' ------------------- usually only these change between runs ---- '''
+drifts=[1.0,0.9] # different drift for each group. Drift of 1->0.85% accuracy.
+a_param=[1.7, 1.7] #boundary 
+suffix='1D0B' 
+''' ------------------- ------------------------------------------ '''
+z_param=0.5 #bias 0.5 is no bias
+t_param=0.3 #non-decision time
+sv_param=0 #trial by trial drift variability
+sz_param=0
+st_param=0
+paramsA={'v':drifts[0], 'a':a_param[0], 't':t_param, 'z':z_param, 'sv':sv_param, 'sz':sz_param, 'st':st_param} # Parameters specified again
+paramsB={'v':drifts[1], 'a':a_param[1], 't':t_param, 'z':z_param, 'sv':sv_param, 'sz':sz_param, 'st':st_param} # Parameters specified again
+intersubj_vars=[0.05,0.05] # [intersubj_drift_var,intersubj_boundary_var]
+
+
+
+'''
+Send of single experiments to parallel processing, getting back the p values associated with the mean participant data
+'''
 
 start = time.time()
 store_apdf = pd.DataFrame(columns=['experiment_number','sample_size','p_value_RTs','p_value_Acc','p_value_Drift','seed'])
 for block_num,ppts in enumerate(n_subjects): # different sample sizes for experiments
     start_seed = block_num * n_experiments
-    expt_func = partial(do_experiment,ppts,n_experiments,stim_A,stim_B,intersubj_drift_var,n_samples,trial_name,trials,start_seed)
+    expt_func = partial(do_experiment,ppts,paramsA,paramsB,intersubj_vars,n_samples,trial_names,trials,start_seed)
     result = pool.map(expt_func, range(n_experiments))
     result = pd.concat(result)
     store_apdf = pd.concat([store_apdf,result])
 
 
-store_apdf.to_csv('samples_v_p_values.csv') # Saving the data array to a CSV.
+store_apdf.to_csv('store_'+suffix+'.csv') # Saving the data array to a CSV.
 
 pool.close()
 
 end = time.time() #record finish time
 
-print("TOOK " + str(round(end - start,3)) + " SECONDS \n\n") #TOOK 5046.116 SECONDS = 84 minnutes
+endmsg="TOOK " + str(round(end - start,3)) + " SECONDS \n\n" 
+print(endmsg)
+try:
+    send_mail('t.stafford@sheffield.ac.uk','tom@idiolect.org.uk','sim_expts.py' + ' :'+suffix+': '+'complete',endmsg,None,'smtp.gmail.com')
+except:
+    print("Couldn't send mail notification")

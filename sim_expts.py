@@ -22,12 +22,12 @@ import hddm
 Define Function
 '''
 
-def ppt_ddm_func(trial_name,params,trials,n_subjects,intersubj_drift_var):
+def ppt_ddm_func(trial_nameA,trial_nameB,paramsA,paramsB,trials,n_subjects,intersubj_drift_var,intersubj_boundary_var):
     '''
     This function simulates data using the DDM model (and the HDDM toolbox)
     with the specified parameters
     '''
-    data,params = hddm.generate.gen_rand_data({trial_name:params},size=trials,subjs=n_subjects,subj_noise={'v':intersubj_drift_var})
+    data,params = hddm.generate.gen_rand_data({trial_nameA:paramsA,trial_nameB:paramsB},size=int(trials),subjs=int(n_subjects),subj_noise={'v':intersubj_drift_var,'a':intersubj_boundary_var})
     '''
     The imported hddm allows for random data generation depending
     on the specified arguments (and parameters). Returns a data array.
@@ -38,71 +38,64 @@ def ppt_ddm_func(trial_name,params,trials,n_subjects,intersubj_drift_var):
 Main Loop
 '''
 
-def do_experiment(ppts,n_experiments,stim_A,stim_B,intersubj_drift_var,n_samples,trial_name,trials,start_seed,expt):
+def do_experiment(ppts,paramsA,paramsB,intersubj_vars,n_samples,trial_names,trials,start_seed,expt):
 
     # Every experiment has its own random seed
     random_seed = start_seed + expt
     np.random.seed(random_seed)
 
-    stims = [stim_A,stim_B] # Drift Rate depends on the Stimulus specified.
+    #generate random data according to the passed DDM parameters
+    data = ppt_ddm_func(trial_names[0],trial_names[1],paramsA,paramsB,trials,ppts,intersubj_vars[0],intersubj_vars[1])
 
-    cohens_d=(stims[0]-stims[1])/intersubj_drift_var
-    params={'v':0.5, 'a':1.0, 't':0.1, 'sv':0.0, 'z':0.5, 'sz':0.0, 'st':0.0} # HDDM Parameters
-    # HDDM Parameters:
-        # v = Drift rate        # a = Boundary separation
-        # t = Non-decision time # z = protent response bias
-        # Inter-trial variability in v, z and t all set to 0 (No variability)
+    # fit the data using the HDDM
+    m = hddm.HDDM(data, depends_on={'v': 'condition', 'a': 'condition'}) # - define model
+    m.find_starting_values() # - find a good starting point which helps with the convergence.
+    m.sample(n_samples, burn=int(n_samples*0.05)+20) # - fit
+    stats = m.gen_stats() #output
+    
+    #collect behavioural means
+    #- average of correct RTs for each individual
+    gp_meansRTs=data[data['response']==1].groupby(['subj_idx','condition'])['rt'].mean().reset_index()
+    #- proportion of correct responses for each individual
+    gp_meansAcc=data.groupby(['subj_idx','condition'])['response'].mean().reset_index()
+    
+    #seperate out for each group, A and B
+    RTsA=gp_meansRTs[gp_meansRTs['condition']=='groupA']['rt'].values
+    RTsB=gp_meansRTs[gp_meansRTs['condition']=='groupB']['rt'].values
+    AccA=gp_meansAcc[gp_meansAcc['condition']=='groupA']['response'].values
+    AccB=gp_meansAcc[gp_meansAcc['condition']=='groupB']['response'].values
 
-    # dataframe for the experiments conducted for each sample size, and the significance value for that sample size.
-    # store_apdf=pd.DataFrame(columns=['experiment_number','sample_size','p_value_RTs','p_value_Acc','p_value_Drift'],index=range(n_experiments*len(n_subjects)))
 
-    store_df=pd.DataFrame(columns=['mean_rtA','mean_rtB','prop_acc_A','prop_acc_B','driftA','driftB'],index=range(ppts))
-    for i,drift in enumerate(stims):
-        params={'v':drift, 'a':2, 't':0.1, 'sv':0, 'z':.5, 'sz':0, 'st':0} # Parameters specified again
-        data = ppt_ddm_func(trial_name,params,trials,ppts,intersubj_drift_var)
-        if i==0:
-            RT_col='mean_rtA'
-            ac_col='prop_acc_A'
-        else:
-            RT_col='mean_rtB'
-            ac_col='prop_acc_B'
-        store_df[RT_col]=data.groupby('subj_idx')['rt'].mean()
-        # 'mean_rtA' + 'mean_rtB' = Mean RTs of participants for each trial.
-        store_df[ac_col]=data.groupby('subj_idx')['response'].mean()
-        # 'prop_acc_A' + 'prop_acc_B' = Accuracy via proportion of correct responses.
+    #now do t-test on RT, Accuracy for group differences
+    
+    RTt,RTp = scipy.stats.ttest_ind(RTsA,RTsB)     #if t is -ve then A<B, ie A quicker
+    Act,Acp = scipy.stats.ttest_ind(AccA,AccB)    #if t is -ve then A<B, ie A is less accurate
+    
+    #We transform p values so they indicate correctness of inference (-ve p values reflect incorrect inference)
+    if RTt<0: #if A is quicker any significant difference is a false alarm (assuming drift for B is only ever = or > than for A)
+        RTp = RTp*(-1)
+    else:
+        RTp = RTp
+        
+    if Act<0            :
+        Acp = Acp
+    else:
+        Acp = Acp*(-1) # if A is more accurate, transform p value (because will be false alarm, as above)
 
-        if i==1:
-            data1=data
-        else:
-            data2=data
+    #frequentist testing is not appropriate, so we compare posteriors directly
+    #following http://ski.clps.brown.edu/hddm_docs/howto.html        
+    v_A, v_B= m.nodes_db.node[['v(groupA)', 'v(groupB)']]        
+    v_p=(v_A.trace() > v_B.trace()).mean()
 
-    data1['group'] = pd.Series(np.ones((len(data1))), index=data1.index)
-    data2['group'] = pd.Series(np.ones((len(data1)))*2, index=data1.index)
-    #Now we merge the data for stimulus A and B
-    mydata = data1.append(data2, ignore_index=True)
-    # fit the data
-    # - define model
-    m = hddm.HDDM(mydata, depends_on={'v': 'group'})
-    # - find a good starting point which helps with the convergence.
-    m.find_starting_values()
-    # - fit
-    m.sample(n_samples, burn=int(n_samples*0.05))
-    stats = m.gen_stats()
-    # - store
-    store_df['driftA']=stats.loc[stats.index.str.contains('v_subj\(1.0\)'),'mean'].values
-    store_df['driftB']=stats.loc[stats.index.str.contains('v_subj\(2.0\)'),'mean'].values
+#    ''' auditing - save interim data'''
+#    if expt == 0:
+#        data.to_csv('audit_first_expt_of'+str(n_experiments)+'.csv')  
+#        stats.to_csv('audit_stats_expt_of'+str(n_experiments)+'.csv')
+#        data.to_csv('audit_single_expt_data.csv')  # store result first time we do this, for auditing
+#        
+#    if expt == 1:
+#        data.to_csv('exptis1.csv')
 
-    if expt == 0:
-        store_df.to_csv('audit_mean_data.csv')       # Save generated data for auditing
-        mydata.to_csv('audit_single_expt_data.csv')  # store result first time we do this, for auditing
+    print("\n - done" + str(ppts))
 
-    # t-test not appropriate for hierarchically generated data, but fix this later
-    t,p = scipy.stats.ttest_ind(store_df['mean_rtA'],store_df['mean_rtB'])
-    # Running a t-test for the mean reaction times of both stimulu (t,p)
-    t2,p2 = scipy.stats.ttest_ind(store_df['prop_acc_A'],store_df['prop_acc_B'])
-    # Running a t-test for the mean proportion of accurate responses for both stimuli (t2,p2)
-    t3,p3 = scipy.stats.ttest_ind(store_df['driftA'],store_df['driftB'])
-    # Running a t-test for the mean proportion of accurate responses for both stimuli (t2,p2)
-    print('\n')
-    print([expt,ppts,p,p2,p3])
-    return(pd.DataFrame([[expt,ppts,p,p2,p3,random_seed]],index = [expt],columns=['experiment_number','sample_size','p_value_RTs','p_value_Acc','p_value_Drift','seed']))
+    return(pd.DataFrame([[expt,ppts,RTp,Acp,v_p,random_seed]],index = [expt],columns=['experiment_number','sample_size','p_value_RTs','p_value_Acc','p_value_Drift','seed']))

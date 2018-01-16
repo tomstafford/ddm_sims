@@ -3,36 +3,30 @@ import pandas as pd
 
 plt.style.use('fivethirtyeight')
 
-df=pd.read_csv('samples_v_p_values.csv')
+suffix='1D0B'
 
-'''
-df1=pd.read_csv('samples_v_p_values51020a.csv')
-df2=pd.read_csv('samples_v_p_values20.csv')
-
-df=df1.append(df2,ignore_index=True)
-'''
+df=pd.read_csv('store_'+suffix+'.csv')
 
 print("check raw data")
 df.groupby('sample_size')['experiment_number'].count()
 
 
-
-
+plt.clf()
 df.groupby('sample_size')['p_value_RTs'].mean().plot(label='RT')
 df.groupby('sample_size')['p_value_Acc'].mean().plot(label='accuracy')
 df.groupby('sample_size')['p_value_Drift'].mean().plot(label='drift')
 plt.ylabel('mean_p_value')
 plt.legend(loc=0)
-plt.savefig('mean_p_values.png')
+plt.savefig('mean_p_values_'+suffix+'.png',bbox_inches='tight')
 
-plt.clf()
+
 
 
 
 '''
 Plotting both the average proportion of p-values for RTs and Accuracy
 '''
-
+plt.clf()
 df['RTsig']=(df['p_value_RTs']<0.05)*1 #for fascinating reasons boolean values break the sum function https://github.com/pandas-dev/pandas/issues/3752
 df['Acsig']=(df['p_value_Acc']<0.05)*1 #for fascinating reasons boolean values break the sum function https://github.com/pandas-dev/pandas/issues/3752
 df['Drsig']=(df['p_value_Drift']<0.05)*1 #for fascinating reasons boolean values break the sum function https://github.com/pandas-dev/pandas/issues/3752
@@ -61,4 +55,4 @@ plt.ylabel('proportion of sig. p values')
 plt.xlabel('sample size')
 plt.ylim([-0.05, 1.05]) # Setting y axis limits so we can clearly see 0 to 1
 plt.legend(loc=0)
-plt.savefig('prop_sig_p_values.png')
+plt.savefig('prop_sig_p_values_'+suffix+'.png',bbox_inches='tight')
