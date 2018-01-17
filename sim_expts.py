@@ -97,5 +97,7 @@ def do_experiment(ppts,paramsA,paramsB,intersubj_vars,n_samples,trial_names,tria
 #        data.to_csv('exptis1.csv')
 
     print("\n - done" + str(ppts))
+    
+    cohen_d_drift=(paramsB['v']-paramsA['v'])/intersubj_vars[0]
 
-    return(pd.DataFrame([[expt,ppts,RTp,Acp,v_p,random_seed]],index = [expt],columns=['experiment_number','sample_size','p_value_RTs','p_value_Acc','p_value_Drift','seed']))
+    return(pd.DataFrame([[expt,ppts,cohen_d_drift,RTp,Acp,v_p,random_seed]],index = [expt],columns=['experiment_number','sample_size','Drift_effect_size','p_value_RTs','p_value_Acc','p_value_Drift','seed']))
