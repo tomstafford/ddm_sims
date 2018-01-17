@@ -3,7 +3,7 @@ import pandas as pd
 
 plt.style.use('fivethirtyeight')
 
-suffix='1D0B'
+suffix='0D0B'
 
 df=pd.read_csv('store_'+suffix+'.csv')
 

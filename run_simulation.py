@@ -23,7 +23,7 @@ trials = 20 # trial per participants
         # t = Non-decision time # z = protent response bias
         # Inter-trial variability in v, z and t all set to 0 (No variability)
 ''' ------------------- usually only these change between runs ---- '''
-drifts=[1.0,0.9] # different drift for each group. Drift of 1->0.85% accuracy.
+drifts=[0.9,1.0] # different drift for each group. Drift of 1->0.85% accuracy.
 a_param=[1.7, 1.7] #boundary 
 suffix='1D0B' 
 ''' ------------------- ------------------------------------------ '''

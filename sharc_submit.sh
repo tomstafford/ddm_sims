@@ -1,5 +1,5 @@
 #!/bin/bash
-#$ -pe smp 16
+#$ -pe smp 32
 #$ -l rmem=3G 
 #$ -P rse
 
