@@ -3,7 +3,7 @@ import pandas as pd
 
 plt.style.use('fivethirtyeight')
 
-suffix='0D0B'
+suffix='m1D0B'
 
 df=pd.read_csv('store_'+suffix+'.csv')
 
@@ -27,8 +27,8 @@ plt.savefig('mean_p_values_'+suffix+'.png',bbox_inches='tight')
 Plotting both the average proportion of p-values for RTs and Accuracy
 '''
 plt.clf()
-df['RTsig']=(df['p_value_RTs']<0.05)*1 #for fascinating reasons boolean values break the sum function https://github.com/pandas-dev/pandas/issues/3752
-df['Acsig']=(df['p_value_Acc']<0.05)*1 #for fascinating reasons boolean values break the sum function https://github.com/pandas-dev/pandas/issues/3752
+df['RTsig']=((df['p_value_RTs']>0) & (df['p_value_RTs']<0.05))*1 #for fascinating reasons boolean values break the sum function https://github.com/pandas-dev/pandas/issues/3752
+df['Acsig']=((df['p_value_Acc']>0) & (df['p_value_Acc']<0.05))*1 #for fascinating reasons boolean values break the sum function https://github.com/pandas-dev/pandas/issues/3752
 df['Drsig']=(df['p_value_Drift']<0.05)*1 #for fascinating reasons boolean values break the sum function https://github.com/pandas-dev/pandas/issues/3752
 
 total_n=df.groupby('sample_size')['RTsig'].count()
