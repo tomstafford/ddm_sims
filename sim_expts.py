@@ -94,7 +94,16 @@ def do_experiment(ppts,paramsA,paramsB,intersubj_vars,n_samples,trial_names,tria
 
 
     print("\n - done" + str(ppts))
+
+    def cohen_d(x,y):    
+        # from https://stackoverflow.com/questions/21532471/how-to-calculate-cohens-d-in-python
+        from numpy import std, mean, sqrt
+        nx = len(x)
+        ny = len(y)
+        dof = nx + ny - 2
+        return (mean(x) - mean(y)) / sqrt(((nx-1)*std(x, ddof=1) ** 2 + (ny-1)*std(y, ddof=1) ** 2) / dof)    
+    
     
     cohen_d_drift=(paramsB['v']-paramsA['v'])/intersubj_vars[0]
 
-    return(pd.DataFrame([[expt,ppts,RTsA.mean(),RTsB.mean(),AccA.mean(),AccB.mean(),cohen_d_drift,RTp,Acp,v_p,random_seed]],index = [expt],columns=['experiment_number','sample_size','groupA_RT_mean','groupB_RT_mean','groupA_Acc_mean','groupB_Acc_mean','Drift_effect_size','p_value_RTs','p_value_Acc','p_value_Drift','seed']))
+    return(pd.DataFrame([[expt,ppts,RTsA.mean(),RTsB.mean(),AccA.mean(),AccB.mean(),cohen_d(RTsA,RTsB),cohen_d(AccA,AccB),cohen_d_drift,RTp,Acp,v_p,random_seed]],index = [expt],columns=['experiment_number','sample_size','groupA_RT_mean','groupB_RT_mean','groupA_Acc_mean','groupB_Acc_mean','RT_effect_size','Acc_effect_size','Drift_effect_size','p_value_RTs','p_value_Acc','p_value_Drift','seed']))

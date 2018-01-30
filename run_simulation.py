@@ -41,7 +41,7 @@ Send of single experiments to parallel processing, getting back the p values ass
 '''
 
 start = time.time()
-store_apdf = pd.DataFrame(columns=['experiment_number','sample_size','groupA_RT_mean','groupB_RT_mean','groupA_Acc_mean','groupB_Acc_mean','Drift_effect_size','p_value_RTs','p_value_Acc','p_value_Drift','seed'])
+store_apdf = pd.DataFrame(columns=['experiment_number','sample_size','groupA_RT_mean','groupB_RT_mean','groupA_Acc_mean','groupB_Acc_mean','RT_effect_size','Acc_effect_size','Drift_effect_size','p_value_RTs','p_value_Acc','p_value_Drift','seed'])
 for block_num,ppts in enumerate(n_subjects): # different sample sizes for experiments
     start_seed = block_num * n_experiments
     expt_func = partial(do_experiment,ppts,paramsA,paramsB,intersubj_vars,n_samples,trial_names,trials,start_seed)
@@ -58,6 +58,7 @@ end = time.time() #record finish time
 
 endmsg="TOOK " + str(round(end - start,3)) + " SECONDS \n\n" 
 print(endmsg)
+
 try:
     send_mail('t.stafford@sheffield.ac.uk','tom@idiolect.org.uk','sim_expts.py' + ' :'+suffix+': '+'complete',endmsg,None,'smtp.gmail.com')
 except:
