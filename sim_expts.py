@@ -85,7 +85,7 @@ def do_experiment(ppts,paramsA,paramsB,intersubj_vars,n_samples,trial_names,tria
     #frequentist testing is not appropriate, so we compare posteriors directly
     #following http://ski.clps.brown.edu/hddm_docs/howto.html        
     v_A, v_B= m.nodes_db.node[['v(groupA)', 'v(groupB)']]        
-    v_p=(v_A.trace() > v_B.trace()).mean()
+    v_p=(v_A.trace() > v_B.trace()).mean()/2
 
     ''' auditing - save interim data'''
     if expt == 0:
