@@ -3,23 +3,23 @@ import pandas as pd
 
 plt.style.use('fivethirtyeight')
 
-suffix='m1D0B'
+suffix='d2D0By'
 
 df=pd.read_csv('store_'+suffix+'.csv')
 
 print("check raw data")
 df.groupby('sample_size')['experiment_number'].count()
 
-
+'''
+# skip plotting mean of absolute p values
 plt.clf()
-df.groupby('sample_size')['p_value_RTs'].mean().plot(label='RT')
-df.groupby('sample_size')['p_value_Acc'].mean().plot(label='accuracy')
-df.groupby('sample_size')['p_value_Drift'].mean().plot(label='drift')
+df.abs().groupby('sample_size')['p_value_RTs'].mean().plot(label='RT')
+df.abs().groupby('sample_size')['p_value_Acc'].mean().plot(label='accuracy')
+df.abs().groupby('sample_size')['p_value_Drift'].mean().plot(label='drift')
 plt.ylabel('mean_p_value')
 plt.legend(loc=0)
 plt.savefig('mean_p_values_'+suffix+'.png',bbox_inches='tight')
-
-
+'''
 
 
 
@@ -46,7 +46,6 @@ prop_p_values_RTs = (total_sig/total_n)  # Renaming RT Proportion for a separate
 prop_p_values_Acc = (total_sig2/total_n2) # Renaming Accuracy Proportion for a separate figure
 prop_p_values_Drf = (total_sig3/total_n3) # Renaming Accuracy Proportion for a separate figure
 
-plt.clf() # Clear previous plot
 prop_p_values_RTs.plot(label='RTs')
 prop_p_values_Acc.plot(label='Acc')
 prop_p_values_Drf.plot(label='Drift')

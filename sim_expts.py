@@ -87,17 +87,14 @@ def do_experiment(ppts,paramsA,paramsB,intersubj_vars,n_samples,trial_names,tria
     v_A, v_B= m.nodes_db.node[['v(groupA)', 'v(groupB)']]        
     v_p=(v_A.trace() > v_B.trace()).mean()
 
-#    ''' auditing - save interim data'''
-#    if expt == 0:
-#        data.to_csv('audit_first_expt_of'+str(n_experiments)+'.csv')  
-#        stats.to_csv('audit_stats_expt_of'+str(n_experiments)+'.csv')
-#        data.to_csv('audit_single_expt_data.csv')  # store result first time we do this, for auditing
-#        
-#    if expt == 1:
-#        data.to_csv('exptis1.csv')
+    ''' auditing - save interim data'''
+    if expt == 0:
+        stats.to_csv('audit_first_expt_stats.csv')
+        data.to_csv('audit_first_expt_data.csv')  # store result first time we do this, for auditing
+
 
     print("\n - done" + str(ppts))
     
     cohen_d_drift=(paramsB['v']-paramsA['v'])/intersubj_vars[0]
 
-    return(pd.DataFrame([[expt,ppts,cohen_d_drift,RTp,Acp,v_p,random_seed]],index = [expt],columns=['experiment_number','sample_size','Drift_effect_size','p_value_RTs','p_value_Acc','p_value_Drift','seed']))
+    return(pd.DataFrame([[expt,ppts,RTsA.mean(),RTsB.mean(),AccA.mean(),AccB.mean(),cohen_d_drift,RTp,Acp,v_p,random_seed]],index = [expt],columns=['experiment_number','sample_size','groupA_RT_mean','groupB_RT_mean','groupA_Acc_mean','groupB_Acc_mean','Drift_effect_size','p_value_RTs','p_value_Acc','p_value_Drift','seed']))

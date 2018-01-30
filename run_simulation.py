@@ -10,9 +10,9 @@ Define Parameters
 
 '''experiment parameters'''
 trial_names = ['groupA','groupB'] # Specfies what each trial is running - e.g. altered number of participants
-n_subjects = [10] # n_participants in each experiment
+n_subjects = [20,40,200] # n_participants in each experiment
 
-n_experiments = 250  # Number of simulated experiments  - make this arbitrary large for final run
+n_experiments = 100  # Number of simulated experiments  - make this arbitrary large for final run
 n_samples = 200  #for HDDM fitting, put this to 5000 for final run
 
 trials = 20 # trial per participants
@@ -23,9 +23,9 @@ trials = 20 # trial per participants
         # t = Non-decision time # z = protent response bias
         # Inter-trial variability in v, z and t all set to 0 (No variability)
 ''' ------------------- usually only these change between runs ---- '''
-drifts=[0.9,0.9] # different drift for each group. Drift of 1->0.85% accuracy.
-a_param=[1.7, 1.7] #boundary 
-suffix='0D0B' 
+drifts=[0.9,1.1] # different drift for each group. Drift of 1->0.85% accuracy. ASSUME GROUP B BETTER IF AT ALL
+a_param=[2, 2] #boundary 
+suffix='D4B0' 
 ''' ------------------- ------------------------------------------ '''
 z_param=0.5 #bias 0.5 is no bias
 t_param=0.3 #non-decision time
@@ -41,7 +41,7 @@ Send of single experiments to parallel processing, getting back the p values ass
 '''
 
 start = time.time()
-store_apdf = pd.DataFrame(columns=['experiment_number','sample_size','Drift_effect_size','p_value_RTs','p_value_Acc','p_value_Drift','seed'])
+store_apdf = pd.DataFrame(columns=['experiment_number','sample_size','groupA_RT_mean','groupB_RT_mean','groupA_Acc_mean','groupB_Acc_mean','Drift_effect_size','p_value_RTs','p_value_Acc','p_value_Drift','seed'])
 for block_num,ppts in enumerate(n_subjects): # different sample sizes for experiments
     start_seed = block_num * n_experiments
     expt_func = partial(do_experiment,ppts,paramsA,paramsB,intersubj_vars,n_samples,trial_names,trials,start_seed)
