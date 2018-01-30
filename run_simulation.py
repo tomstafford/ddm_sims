@@ -15,7 +15,7 @@ n_subjects = [20,40,200] # n_participants in each experiment
 n_experiments = 100  # Number of simulated experiments  - make this arbitrary large for final run
 n_samples = 200  #for HDDM fitting, put this to 5000 for final run
 
-trials = 20 # trial per participants
+trials = 40 # trial per participants
 
 '''HDDM parameters'''
     # HDDM Parameters:
@@ -23,9 +23,9 @@ trials = 20 # trial per participants
         # t = Non-decision time # z = protent response bias
         # Inter-trial variability in v, z and t all set to 0 (No variability)
 ''' ------------------- usually only these change between runs ---- '''
-drifts=[0.9,1.1] # different drift for each group. Drift of 1->0.85% accuracy. ASSUME GROUP B BETTER IF AT ALL
+drifts=[1,2] # different drift for each group. Drift of 1->0.85% accuracy. ASSUME GROUP B BETTER IF AT ALL
 a_param=[2, 2] #boundary 
-suffix='D4B0' 
+suffix='D1B0' 
 ''' ------------------- ------------------------------------------ '''
 z_param=0.5 #bias 0.5 is no bias
 t_param=0.3 #non-decision time
