@@ -1,9 +1,18 @@
-import pylab as plt
+import socket
+
+if 'sharc' in socket.gethostname():
+    print("Running via SSH")
+    import matplotlib #plotting
+    # Force matplotlib to not use any Xwindows backend. 
+    matplotlib.use('Agg') #this is required for when generating plots via ssh    
+
+
+import matplotlib.pylab as plt
 import pandas as pd
 
 plt.style.use('fivethirtyeight')
 
-suffix='d2D0By'
+suffix='D0p4B0_120trials'
 
 df=pd.read_csv('store_'+suffix+'.csv')
 
