@@ -11,6 +11,9 @@ Define Parameters
 '''experiment parameters'''
 trial_names = ['groupA','groupB'] # Specfies what each trial is running - e.g. altered number of participants
 n_subjects = [20,40,200] # n_participants in each experiment
+drift_b=[1, 1.1, 1.2,1.3]
+
+
 
 n_experiments = 100  # Number of simulated experiments  - make this arbitrary large for final run
 n_samples = 200  #for HDDM fitting, put this to 5000 for final run
@@ -23,9 +26,9 @@ trials = 40 # trial per participants
         # t = Non-decision time # z = protent response bias
         # Inter-trial variability in v, z and t all set to 0 (No variability)
 ''' ------------------- usually only these change between runs ---- '''
-drifts=[1,2] # different drift for each group. Drift of 1->0.85% accuracy. ASSUME GROUP B BETTER IF AT ALL
+drifts=[1,1] # different drift for each group. Drift of 1->0.85% accuracy. ASSUME GROUP B BETTER IF AT ALL
 a_param=[2, 2] #boundary 
-suffix='D1B0' 
+suffix='chain' 
 ''' ------------------- ------------------------------------------ '''
 z_param=0.5 #bias 0.5 is no bias
 t_param=0.3 #non-decision time
@@ -41,13 +44,17 @@ Send of single experiments to parallel processing, getting back the p values ass
 '''
 
 start = time.time()
+block_num=0
 store_apdf = pd.DataFrame(columns=['experiment_number','sample_size','groupA_RT_mean','groupB_RT_mean','groupA_Acc_mean','groupB_Acc_mean','RT_effect_size','Acc_effect_size','Drift_effect_size','p_value_RTs','p_value_Acc','p_value_Drift','seed'])
-for block_num,ppts in enumerate(n_subjects): # different sample sizes for experiments
-    start_seed = block_num * n_experiments
-    expt_func = partial(do_experiment,ppts,paramsA,paramsB,intersubj_vars,n_samples,trial_names,trials,start_seed)
-    result = pool.map(expt_func, range(n_experiments))
-    result = pd.concat(result)
-    store_apdf = pd.concat([store_apdf,result])
+for ppts in n_subjects: # different sample sizes for experiments
+    for driftb in drift_b:
+        start_seed = block_num*n_experiments #each batch runs with seperate start seeds
+        paramsB['v']=driftb
+        expt_func = partial(do_experiment,ppts,paramsA,paramsB,intersubj_vars,n_samples,trial_names,trials,start_seed)
+        result = pool.map(expt_func, range(n_experiments))
+        result = pd.concat(result)
+        store_apdf = pd.concat([store_apdf,result])
+        block_num+=1
 
 
 store_apdf.to_csv('store_'+suffix+'.csv') # Saving the data array to a CSV.
