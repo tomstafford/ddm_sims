@@ -1,10 +1,11 @@
 '''
 collate info from multiple runs of sim_expts.py
+- this version compares a single set of positive runs vs negative runs
 '''
 
 import pandas as pd  
 import os
-os.chdir('/home/tom/Dropbox/university/toys/ddm_sims/python_serial')
+#os.chdir('/home/tom/Dropbox/university/toys/ddm_sims/')
 from scipy.stats import norm #for Z scores
 import matplotlib.pylab as plt
 
@@ -16,9 +17,10 @@ import matplotlib.pylab as plt
 #realdat=pd.read_csv('/home/tom/Dropbox/university/toys/ddm_sims/python_serial/output/store_eDeB_2017-10-24_00-30-24.csv',index_col='Unnamed: 0')
 #figlabel='boundaryshift'
 
-nulldat=pd.read_csv('/home/tom/Dropbox/university/toys/ddm_sims/python_serial/output/store_nDeB2_2017-10-24_09-43-47.csv',index_col='Unnamed: 0')
-realdat=pd.read_csv('/home/tom/Dropbox/university/toys/ddm_sims/python_serial/output/store_eDeB2_2017-10-24_09-45-22.csv',index_col='Unnamed: 0')
-figlabel='boundaryshift-opposite'
+nulldat=pd.read_csv('/home/tom/Dropbox/university/toys/ddm_sims/store_D0B0.csv',index_col='Unnamed: 0')
+realdat=pd.read_csv('/home/tom/Dropbox/university/toys/ddm_sims/store_D1B0.csv',index_col='Unnamed: 0')
+
+figlabel='Simple drift increment between group A and group B'
 
 def calc_positives(df):
     df['RTsig']=((df['p_value_RTs']>0) & (df['p_value_RTs']<0.05))*1 #for fascinating reasons boolean values break the sum function https://github.com/pandas-dev/pandas/issues/3752
