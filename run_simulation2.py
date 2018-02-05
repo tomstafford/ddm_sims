@@ -56,6 +56,8 @@ for ppts in n_subjects: # different sample sizes for experiments
         result = pd.concat(result)
         store_apdf = pd.concat([store_apdf,result])
         block_num+=1
+        if block_num%9==0:
+            store_apdf.to_csv('store_TEMP'+str(block_num)+'.csv') # Saving the data array to a CSV.
 
 
 store_apdf.to_csv('store_'+suffix+'.csv') # Saving the data array to a CSV.
