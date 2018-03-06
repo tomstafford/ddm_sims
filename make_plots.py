@@ -12,7 +12,7 @@ import pandas as pd
 
 plt.style.use('fivethirtyeight')
 
-suffix='D0p4B0_120trials'
+suffix='D0B0'
 
 df=pd.read_csv('store_'+suffix+'.csv')
 

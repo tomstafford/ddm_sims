@@ -31,13 +31,15 @@ df=pd.read_csv('summary.csv')
 
 ES=2.0
 
+dprime_correction=0.01 #the amount added to proportions of 0 so the maths works
+
 FAs_=df[df['Drift_effect_size']==0][['sample_size','Drsig','Acsig','RTsig']].set_index('sample_size')
 
 Hits=df[df['Drift_effect_size'].astype(int)==int(ES)][['sample_size','Drsig','Acsig','RTsig']].set_index('sample_size')
 
 
-FAs_=FAs_.applymap(lambda x: dprime_correct(x,0.001))
-Hits=Hits.applymap(lambda x: dprime_correct(x,0.001))
+FAs_=FAs_.applymap(lambda x: dprime_correct(x,dprime_correction))
+Hits=Hits.applymap(lambda x: dprime_correct(x,dprime_correction))
 
 dprime=Hits[['Drsig','RTsig','Acsig']].applymap(norm.ppf)-FAs_[['Drsig','RTsig','Acsig']].apply(norm.ppf)
 
