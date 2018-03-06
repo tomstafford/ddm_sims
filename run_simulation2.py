@@ -3,6 +3,7 @@ from sim_expts import *
 from functools import partial
 pool = Pool(32) #how many processors to use, 4 in the VM, 32 on the RSE Sharc cluster
 from sendemail import send_mail #for sending email
+import os #system functions
 
 '''
 Define Parameters
@@ -38,6 +39,11 @@ st_param=0
 paramsA={'v':drifts[0], 'a':a_param[0], 't':t_param, 'z':z_param, 'sv':sv_param, 'sz':sz_param, 'st':st_param} # Parameters specified again
 paramsB={'v':drifts[1], 'a':a_param[1], 't':t_param, 'z':z_param, 'sv':sv_param, 'sz':sz_param, 'st':st_param} # Parameters specified again
 intersubj_vars=[0.05,0.05] # [intersubj_drift_var,intersubj_boundary_var]
+
+
+paramfile="params_"+suffix + ".txt"
+print("saving parameters in " + suffix)
+os.system("sed -n 7,42p run_simulation2.py > " + paramfile)
 
 '''
 Send of single experiments to parallel processing, getting back the p values associated with the mean participant data
