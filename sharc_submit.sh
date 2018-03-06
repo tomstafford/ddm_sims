@@ -8,5 +8,5 @@
 module load apps/python/conda
 source activate hddm
 
-python -W ignore run_simulation.py
+python -W ignore run_simulation2.py
 
