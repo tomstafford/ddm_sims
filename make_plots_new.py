@@ -27,19 +27,40 @@ def dprime_correct(val,correction):
         return val
 
 
+
+def wavg(group, avg_name, weight_name):
+    """
+    weigthed mean function for applying to grouped df data  
+    cribbing from http://pbpython.com/weighted-average.html which in turn cribs from
+    http://stackoverflow.com/questions/10951341/pandas-dataframe-aggregate-function-using-multiple-columns
+    In rare instance, we may not have weights, so just return the mean. 
+    """
+    d = group[avg_name]
+    w = group[weight_name]
+    try:
+        return (d * w).sum() / w.sum()
+    except ZeroDivisionError:
+        return d.mean()
+        
+
+
 df=pd.read_csv('summary.csv')
 
 
 print("* * * * Figure 1: effect size translation * * * * )
 
 #get observed effect sizes for RT and Acc for each declared drift effect size
-effect_df=df.groupby('Drift_effect_size')['RT_effect_size','Acc_effect_size'].mean().reset_index()
+RT_effect_size=df.groupby("Drift_effect_size").apply(wavg, "RT_effect_size", "sample_size")
+Ac_effect_size=df.groupby("Drift_effect_size").apply(wavg, "Acc_effect_size", "sample_size")
+#merge
+effect_df=pd.merge(RT_effect_size.reset_index(), Ac_effect_size.reset_index(), how='inner', on=['Drift_effect_size'])
+effect_df.columns=['Drift','RT','Acc']
 #make all ES positive
 effect_df=effect_df.apply(abs)
 
 plt.clf()
-plt.plot(effect_df['Drift_effect_size'],effect_df['RT_effect_size'],'.',ms=10,label='RT')
-plt.plot(effect_df['Drift_effect_size'],effect_df['Acc_effect_size'],'.',ms=10,label='Accuracy')
+plt.plot(effect_df['Drift'],effect_df['RT'],'.',ms=10,label='RT')
+plt.plot(effect_df['Drift'],effect_df['Acc'],'.',ms=10,label='Accuracy')
 plt.xlabel("Cohen's d of drift")
 plt.ylabel("Cohen's d of RT or Accuracy")
 plt.legend(loc=0)
