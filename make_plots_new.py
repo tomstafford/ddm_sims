@@ -29,6 +29,31 @@ def dprime_correct(val,correction):
 
 df=pd.read_csv('summary.csv')
 
+
+print("* * * * Figure 1: effect size translation * * * * )
+
+#get observed effect sizes for RT and Acc for each declared drift effect size
+effect_df=df.groupby('Drift_effect_size')['RT_effect_size','Acc_effect_size'].mean().reset_index()
+#make all ES positive
+effect_df=effect_df.apply(abs)
+
+plt.clf()
+plt.plot(effect_df['Drift_effect_size'],effect_df['RT_effect_size'],'.',ms=10,label='RT')
+plt.plot(effect_df['Drift_effect_size'],effect_df['Acc_effect_size'],'.',ms=10,label='Accuracy')
+plt.xlabel("Cohen's d of drift")
+plt.ylabel("Cohen's d of RT or Accuracy")
+plt.legend(loc=0)
+plt.savefig('effectsizetranslation.png',bbox_inches='tight')
+
+
+
+
+
+
+
+print("* * * * Figures 2-4: measure comparison for a fixed effect size, no SATO * * * * )
+
+
 ES=2.0
 
 dprime_correction=0.01 #the amount added to proportions of 0 so the maths works
@@ -63,4 +88,3 @@ plt.savefig('dprime.png',bbox_inches='tight')
 
 
 
-df.groupby('Drift_effect_size')['RT_effect_size','Acc_effect_size'].mean().plot()
