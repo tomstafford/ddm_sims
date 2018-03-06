@@ -28,8 +28,8 @@ trials = 40 # trial per participants
         # Inter-trial variability in v, z and t all set to 0 (No variability)
 ''' ------------------- usually only these change between runs ---- '''
 drifts=[1,1] # different drift for each group. Drift of 1->0.85% accuracy. ASSUME GROUP B BETTER IF AT ALL
-a_param=[2, 2] #boundary 
-suffix='chain' 
+a_param=[2, 1.9] #boundary 
+suffix='SATO' 
 ''' ------------------- ------------------------------------------ '''
 z_param=0.5 #bias 0.5 is no bias
 t_param=0.3 #non-decision time
