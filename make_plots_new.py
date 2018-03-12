@@ -9,10 +9,10 @@ import matplotlib.pylab as plt
 import glob
 from scipy.stats import norm #for Z scores
 
-if 'tom' in socket.gethostname():
-    os.chdir('/home/tom/Dropbox/university/toys/ddm_sims/')
-else:
-    print("assuming running in host directory")
+#if 'tom' in socket.gethostname():
+#    os.chdir('/home/tom/Dropbox/university/toys/ddm_sims/')
+#else:
+#    print("assuming running in host directory")
 
 
 
@@ -47,7 +47,7 @@ def wavg(group, avg_name, weight_name):
 df=pd.read_csv('summary.csv')
 
 
-print("* * * * Figure 1: effect size translation * * * * )
+print("* * * * Figure 1: effect size translation * * * * ")
 
 #get observed effect sizes for RT and Acc for each declared drift effect size
 RT_effect_size=df.groupby("Drift_effect_size").apply(wavg, "RT_effect_size", "sample_size")
@@ -72,7 +72,7 @@ plt.savefig('effectsizetranslation.png',bbox_inches='tight')
 
 
 
-print("* * * * Figures 2-4: measure comparison for a fixed effect size, no SATO * * * * )
+print("* * * * Figures 2-4: measure comparison for a fixed effect size, no SATO * * * *" )
 
 
 ES=2.0

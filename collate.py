@@ -8,10 +8,10 @@ import socket
 import os
 import glob
 
-if 'tom' in socket.gethostname():
-    os.chdir('/home/tom/Dropbox/university/toys/ddm_sims/')
-else:
-    print("assuming running in host directory")
+#if 'tom' in socket.gethostname():
+#    os.chdir('/home/tom/Dropbox/university/toys/ddm_sims/')
+#else:
+#    print("assuming running in host directory")
 
 
 #rewrite so 
