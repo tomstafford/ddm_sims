@@ -13,7 +13,7 @@ Define Parameters
 trial_names = ['groupA','groupB'] # Specfies what each trial is running - e.g. altered number of participants
 #n_subjects = [10,20,30,40,50,75,100,150,300] # n_participants in each experiment
 #drift_b=[1,1.1,1.2,1.3,1.4,1.5,1.6,1.7,1.8]
-n_subjects = [40,75,150] # n_participants in each experiment
+n_subjects = [40,75,300] # n_participants in each experiment
 drift_b=[1,1.05,1.1,1.15,1.2,1.6]
 
 
