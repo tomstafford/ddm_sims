@@ -22,6 +22,8 @@ n_samples = 200  #for HDDM fitting, put this to 5000 for final run
 
 trials = 40 # trial per participants
 
+print("Number of simulated experiments = " + str(len(drift_b)*len(n_subjects)*n_experiments))
+
 '''HDDM parameters'''
     # HDDM Parameters:
         # v = Drift rate        # a = Boundary separation
