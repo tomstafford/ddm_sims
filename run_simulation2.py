@@ -13,9 +13,8 @@ Define Parameters
 trial_names = ['groupA','groupB'] # Specfies what each trial is running - e.g. altered number of participants
 #n_subjects = [10,20,30,40,50,75,100,150,300] # n_participants in each experiment
 #drift_b=[1,1.1,1.2,1.3,1.4,1.5,1.6,1.7,1.8]
-n_subjects = [40,75,300] # n_participants in each experiment
-drift_b=[1,1.05,1.1,1.15,1.2,1.6]
-
+n_subjects = [10,20,30,40,75,300] # n_participants in each experiment
+drift_b=[1,1.10] #smaller range of drift d's diff 1:1.25 -> cohen's d of drift = 5 .
 
 n_experiments = 1000  # Number of simulated experiments  - make this arbitrary large for final run
 n_samples = 200  #for HDDM fitting, put this to 5000 for final run
@@ -32,7 +31,7 @@ print("Number of simulated experiments = " + str(len(drift_b)*len(n_subjects)*n_
 ''' ------------------- usually only these change between runs ---- '''
 drifts=[1,1] # different drift for each group. Drift of 1->0.85% accuracy. ASSUME GROUP B BETTER IF AT ALL
 a_param=[2, 2] #boundary 
-suffix='NOSATO_t40_increments' 
+suffix='NOSATO_t40_restricted' 
 ''' ------------------- ------------------------------------------ '''
 z_param=0.5 #bias 0.5 is no bias
 t_param=0.3 #non-decision time
