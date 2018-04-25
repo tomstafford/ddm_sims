@@ -1,7 +1,7 @@
 from multiprocessing import Pool
 from sim_expts import *
 from functools import partial
-pool = Pool(32) #how many processors to use, 4 in the VM, 32 on the RSE Sharc cluster
+pool = Pool(16) #how many processors to use, 4 in the VM, 32 on the RSE Sharc cluster
 from sendemail import send_mail #for sending email
 import os #system functions
 

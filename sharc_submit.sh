@@ -1,5 +1,5 @@
 #!/bin/bash
-#$ -pe smp 32
+#$ -pe smp 16
 #$ -l rmem=16G 
 #$ -P rse
 #$ -l h_rt=48:00:00
