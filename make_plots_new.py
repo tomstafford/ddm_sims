@@ -59,10 +59,13 @@ effect_df.columns=['Drift','RT','Acc']
 effect_df=effect_df.apply(abs)
 
 plt.clf()
-plt.plot(effect_df['Drift'],effect_df['RT'],'.',ms=10,label='RT')
 plt.plot(effect_df['Drift'],effect_df['Acc'],'.',ms=10,label='Accuracy')
+plt.plot(effect_df['Drift'],effect_df['RT'],'.',ms=10,label='RT')
 plt.xlabel("Cohen's d of drift")
 plt.ylabel("Cohen's d of RT or Accuracy")
+pad=(effect_df['Drift'].max()-effect_df['Drift'].min())*0.1
+
+plt.xlim([effect_df['Drift'].min()-pad,effect_df['Drift'].max()+pad])
 plt.legend(loc=0)
 plt.savefig('effectsizetranslation.png',bbox_inches='tight')
 
