@@ -17,7 +17,7 @@ n_samples = 200  #for HDDM fitting, put this to 5000 for final run
 ##
 ''' ------------------- usually only these change between runs ---- '''
 n_subjects = [1000] # e.g. [10,20,30,40,50,75,150] # n_participants in each experiment
-drift_b=[1,0] #e.g. [1,1.05,1.1,1.15,1.2] #range of drift in 2nd group
+drift_b=[1,1] #e.g. [1,1.05,1.1,1.15,1.2] #range of drift in 2nd group
 drift_a=np.ones(len(drift_b)) # assume group a is baseline, with drift of 1 in each condition. Drift of 1->0.85% accuracy. ASSUME GROUP B BETTER IF AT ALL
 n_experiments = 1  # Number of simulated experiments  - make this arbitrary large for final run
 trials = 100 # trial per participants
@@ -85,7 +85,11 @@ except:
 
 '''
 import pylab as plt
-df=pd.read_csv('audit_first_expt_data.csv')
+df=pd.read_csv('audit_first_expt_data4.csv')
 df.groupby(['subj_idx','condition'])['rt','response'].mean()
 rts=df.groupby(['subj_idx','condition'])['rt','response'].mean().reset_index()['rt'].values
 acc=df.groupby(['subj_idx','condition'])['rt','response'].mean().reset_index()['response'].values
+plt.clf()
+plt.plot(rts,acc,'.')
+spd=1/rts
+plt.plot(spd,acc,'.')
