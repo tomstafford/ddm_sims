@@ -20,9 +20,9 @@ n_subjects = [1000] # e.g. [10,20,30,40,50,75,150] # n_participants in each expe
 drift_b=[1,0] #e.g. [1,1.05,1.1,1.15,1.2] #range of drift in 2nd group
 drift_a=np.ones(len(drift_b)) # assume group a is baseline, with drift of 1 in each condition. Drift of 1->0.85% accuracy. ASSUME GROUP B BETTER IF AT ALL
 n_experiments = 1  # Number of simulated experiments  - make this arbitrary large for final run
-trials = 40 # trial per participants
-a_param=[2, 2] #boundary  for group A group B
-suffix='SATO_t40_highvar' 
+trials = 100 # trial per participants
+a_param=[4, 4] #boundary  for group A group B
+suffix='SATO_t40_highvar4' 
 ''' ------------------- ------------------------------------------ '''
 ##
 #
@@ -43,7 +43,7 @@ intersubj_vars=[0.05,1] # [intersubj_drift_var,intersubj_boundary_var]
 
 paramfile="params_"+suffix + ".txt"
 print("saving parameters in " + suffix)
-os.system("sed -n 8,44p run_simulation2.py > " + paramfile)
+os.system("sed -n 8,44p run_simulation_SATO.py > " + paramfile)
 
 print("Number of simulated experiments = " + str(len(drift_b)*len(n_subjects)*n_experiments))
 
@@ -82,3 +82,10 @@ try:
     send_mail('t.stafford@sheffield.ac.uk','tom@idiolect.org.uk','sim_expts.py' + ' :'+suffix+': '+'complete',endmsg,None,'smtp.gmail.com')
 except:
     print("Couldn't send mail notification")
+
+'''
+import pylab as plt
+df=pd.read_csv('audit_first_expt_data.csv')
+df.groupby(['subj_idx','condition'])['rt','response'].mean()
+rts=df.groupby(['subj_idx','condition'])['rt','response'].mean().reset_index()['rt'].values
+acc=df.groupby(['subj_idx','condition'])['rt','response'].mean().reset_index()['response'].values
