@@ -1,4 +1,4 @@
 #!/bin/bash
 rm *.csv
 rm *.txt
-rm sharc_submit.o*
+rm sharc_submit.sh.o*
