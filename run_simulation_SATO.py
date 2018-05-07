@@ -21,8 +21,8 @@ drift_b=[1,1] #e.g. [1,1.05,1.1,1.15,1.2] #range of drift in 2nd group
 drift_a=np.ones(len(drift_b)) # assume group a is baseline, with drift of 1 in each condition. Drift of 1->0.85% accuracy. ASSUME GROUP B BETTER IF AT ALL
 n_experiments = 1  # Number of simulated experiments  - make this arbitrary large for final run
 trials = 40 # trial per participants
-a_param=[4, 4] #boundary  for group A group B
-suffix='SATO_t40_highvar4c' 
+a_param=[2, 2] #boundary  for group A group B
+suffix='SATO_t40_highvar2a' 
 ''' ------------------- ------------------------------------------ '''
 ##
 #
@@ -38,7 +38,7 @@ sz_param=0
 st_param=0
 paramsA={'a':a_param[0], 't':t_param, 'z':z_param, 'sv':sv_param, 'sz':sz_param, 'st':st_param} # Parameters specified again
 paramsB={'a':a_param[1], 't':t_param, 'z':z_param, 'sv':sv_param, 'sz':sz_param, 'st':st_param} # Parameters specified again
-intersubj_vars=[0.05,0.15] # [intersubj_drift_var,intersubj_boundary_var]
+intersubj_vars=[0.05,0.5] # [intersubj_drift_var,intersubj_boundary_var]
 
 
 paramsfile="params_"+suffix + ".txt"
@@ -85,7 +85,7 @@ except:
 
 '''
 import pylab as plt
-df=pd.read_csv('audit_first_expt_data4.csv')
+df=pd.read_csv('audit_first_expt_data.csv')
 df.groupby(['subj_idx','condition'])['rt','response'].mean()
 rts=df.groupby(['subj_idx','condition'])['rt','response'].mean().reset_index()['rt'].values
 acc=df.groupby(['subj_idx','condition'])['rt','response'].mean().reset_index()['response'].values
@@ -93,3 +93,15 @@ plt.clf()
 plt.plot(rts,acc,'.')
 spd=1/rts
 plt.plot(spd,acc,'.')
+import seaborn as sns
+sns.jointplot(rts,acc,kind="hex")
+
+sf=pd.DataFrame(rts,acc).reset_index()
+
+bins = np.arange(0,1.01,0.025)
+sf['binned'] = pd.cut(sf['index'], bins)
+plt.clf()
+plt.plot(sf.groupby('binned')[0].mean().dropna().values,sf.groupby('binned')['index'].mean().dropna().values,)
+plt.clf()
+plt.plot(1/(sf.groupby('binned')[0].mean().dropna().values),sf.groupby('binned')['index'].mean().dropna().values,)
+'''
