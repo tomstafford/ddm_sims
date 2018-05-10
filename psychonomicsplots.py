@@ -146,6 +146,7 @@ folder='SATO-direct/SATO_highvar4e/' #Boundary=4, var=0.5 -> not variation in ac
 folder='SATO-direct/SATO_highvar/' #Boundary=2, var=1 -> not variation in accuracy, all RTs very high? Two regeimes?
 folder='SATO-direct/SATO_highvar1v0p25/' #boundary =1, var =0.5
 folder='SATO-direct/SATO_highvar2v1highn/'
+folder='SATO-direct/SATO_highvar2v1_1v0/'
 
 folder='SATO-direct/SATO_highvar2v1/' #boundary =1, var =1
 df=pd.read_csv('data/'+folder+'audit_first_expt_data.csv')
@@ -156,7 +157,7 @@ plt.plot(rts,acc,'.')
 plt.xlabel('Reaction Time')
 plt.ylabel('Accuracy')
 plt.ylim([-0.05 ,1.05])
-plt.annotate('boundary=2 (variance = 1)\n drift = 1 (variance = 0.05) ',xy=(1.2,0.1),xycoords='data')
+plt.annotate('boundary=2 (variance = 1)\n drift = 1 (variance = 0)',xy=(1.2,0.1),xycoords='data')
 plt.savefig('psychonomics/SATO-direct_scatter.png',bbox_inches='tight')
 sns.jointplot(rts,acc,kind="kde") #add labels, move legend etc
 
