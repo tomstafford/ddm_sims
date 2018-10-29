@@ -78,7 +78,7 @@ plt.savefig('effectsizetranslation.png',bbox_inches='tight')
 print("* * * * Figures 2-4: measure comparison for a fixed effect size, no SATO * * * *" )
 
 
-ES=2.0
+ES=3.0
 
 dprime_correction=0.001# 0.01 #the amount added to proportions of 0 so the maths works
 
