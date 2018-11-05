@@ -22,7 +22,7 @@ drift_a=np.ones(len(drift_b)) # assume group a is baseline, with drift of 1 in e
 n_experiments = 4  # Number of simulated experiments  - make this arbitrary large for final run
 trials = 40 # trial per participants
 a_param=[2, 2] #boundary  for group A group B
-suffix='SATO_t40_test' 
+suffix='tempTEMP' 
 ''' ------------------- ------------------------------------------ '''
 ##
 #
