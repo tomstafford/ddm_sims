@@ -1,7 +1,38 @@
 # ddm_sims
-**Simulating decision making data and parameter recovery**
+*Simulating decision making data and parameter recovery*
 
-**Running the simulation**
+## Workflow/file descriptions
+
+### Folders
+/attic - old stuff we can probably forget about 
+/data - simulations results (raw outputs)
+/figs - figures (processed data)
+/for_stiching - a holding folder for outputs from simulations with the same parameters (but which require multiple jobs to generate)
+/psychonomics - files for International Psychonomics Society Meeting in Amsterdam, 2018
+/write_up - paper describing project
+
+### Files
+
+clean.sh - used to tidy up cluster after having run a job
+
+collate.py - gather raw outputs in /for_stitching, output summary.csv
+P_make_plots_new.py - make hits,FAs,drpime plots from summary.csv
+P_psychonomicsplots.py - make plots for psychonomics talk
+
+README.md - this file
+
+run_simulaton2.py - run a job
+run_simulation_SATO - run a job, with SATO (do we need this?)
+
+sendemail.py - funciton for sending emails
+sharc_submit - script for submitting job on cluster
+
+sim_expts.py - functions for simulating data and fitting HDDM
+sim_ez.py - analogous functions for simulating data and fitting with EZDDM
+
+
+
+## Details on running the simulations
 
 To run the simulation, edit `run_simulation.py` so that you request a `Pool` size that's suitable for your machine.
 Then do,

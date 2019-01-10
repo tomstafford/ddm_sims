@@ -38,7 +38,7 @@ print("creating expt sample size * drift effect size summary table")
 #code each p values as significant iff <0.05 and in the right direction
 df['RTsig']=((df['p_value_RTs']>0) & (df['p_value_RTs']<0.05))*1 #for fascinating reasons boolean values break the sum function https://github.com/pandas-dev/pandas/issues/3752
 df['Acsig']=((df['p_value_Acc']>0) & (df['p_value_Acc']<0.05))*1 #for fascinating reasons boolean values break the sum function https://github.com/pandas-dev/pandas/issues/3752
-df['Drsig']=(df['p_value_Drift']<0.05)*1 #for fascinating reasons boolean values break the sum function https://github.com/pandas-dev/pandas/issues/3752
+df['Drsig']=((df['p_value_Drift']>0) & (df['p_value_Drift']<0.05))*1 #for fascinating reasons boolean values break the sum function https://github.com/pandas-dev/pandas/issues/3752
 
 #raw frequencies of significant p values
 total_n=df.groupby(['sample_size','Drift_effect_size'])['RTsig'].count()
@@ -55,6 +55,11 @@ prop_p_values_Drf = (total_sig3/total_n3) # Renaming Accuracy Proportion for a s
 
  
 #get average observed effect size over n simulated experiments for each sample size * Drift ES combination
+ 
+ 
+df['RT_effect_size']=df['RT_effect_size'].apply(abs)
+df['Acc_effect_size']=df['Acc_effect_size'].apply(abs)
+ 
 RT_es=df.groupby(['sample_size','Drift_effect_size'])['RT_effect_size'].mean()
 Ac_es=df.groupby(['sample_size','Drift_effect_size'])['Acc_effect_size'].mean()
 #Dr_es=df.groupby('sample_size')['Drift_effect_size'].mean()

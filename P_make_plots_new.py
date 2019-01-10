@@ -10,7 +10,7 @@ import glob
 from scipy.stats import norm #for Z scores
 
 #if 'tom' in socket.gethostname():
-#    os.chdir('/home/tom/Dropbox/university/toys/ddm_sims/')
+#    os.chdir('/home/tom/t.stafford@sheffield.ac.uk/A_UNIVERSITY/toys/ddm_sims')
 #else:
 #    print("assuming running in host directory")
 
@@ -78,7 +78,7 @@ plt.savefig('effectsizetranslation.png',bbox_inches='tight')
 print("* * * * Figures 2-4: measure comparison for a fixed effect size, no SATO * * * *" )
 
 
-ES=3.0
+ES=2.0
 
 dprime_correction=0.001# 0.01 #the amount added to proportions of 0 so the maths works
 
@@ -102,7 +102,7 @@ plt.savefig('FalseAlarms.png',bbox_inches='tight')
 
 Hits.sort_index().plot()
 plt.ylabel('Hit rate')
-plt.ylim([-0.5 ,1.05])
+plt.ylim([-0.05 ,1.05])
 plt.savefig('HitRate.png',bbox_inches='tight')
 
 
