@@ -24,11 +24,31 @@ README.md - this file
 run_simulaton2.py - run a job
 run_simulation_SATO - run a job, with SATO (do we need this?)
 
-sendemail.py - funciton for sending emails
+sendemail.py - function for sending emails
 sharc_submit - script for submitting job on cluster
 
 sim_expts.py - functions for simulating data and fitting HDDM
 sim_ez.py - analogous functions for simulating data and fitting with EZDDM
+
+
+## Changes to run different simulations
+
+The parameters for the different simulations are all at the top of the run_simulations2.py file
+
+Most importantly, if you change these change the file
+
+```
+suffix='NOSATO_t40_hddm_es2
+```
+
+Which will mean your changes are saved and labelled with a name that makes sense to you
+
+Also the engine for running the simulations (EZ or HDDM) is set by which of these lines is commented
+
+```
+        #expt_func = partial(do_experimentEZ,ppts,paramsA,paramsB,intersubj_vars,n_samples,trial_names,trials,start_seed)
+        expt_func = partial(do_experiment,ppts,paramsA,paramsB,intersubj_vars,n_samples,trial_names,trials,start_seed)
+```
 
 
 
