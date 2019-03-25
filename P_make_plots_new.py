@@ -84,7 +84,11 @@ dprime_correction=0.001# 0.01 #the amount added to proportions of 0 so the maths
 
 FAs_=df[df['Drift_effect_size']==0][['sample_size','Drsig','RTsig','Acsig']].set_index('sample_size')
 
-Hits=df[df['Drift_effect_size'].astype(int)==int(ES)][['sample_size','Drsig','RTsig','Acsig']].set_index('sample_size')
+#mask=df['Drift_effect_size'].astype(int)==int(ES)
+mask=(df['Drift_effect_size']>(ES-0.01)) & (df['Drift_effect_size']<(ES+0.01))
+
+Hits=df[mask][['sample_size','Drsig','RTsig','Acsig']].set_index('sample_size')
+
 
 
 FAs_=FAs_.applymap(lambda x: dprime_correct(x,dprime_correction))
