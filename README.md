@@ -4,12 +4,20 @@
 ## Workflow/file descriptions
 
 ### Folders
+
 /attic - old stuff we can probably forget about 
+
 /data - simulations results (raw outputs)
+
 /figs - figures (processed data)
+
 /for_stiching - a holding folder for outputs from simulations with the same parameters (but which require multiple jobs to generate)
+
 /psychonomics - files for International Psychonomics Society Meeting in Amsterdam, 2018
+
 /write_up - paper describing project
+
+/xspl_power_analyser - shiny app
 
 ### Files
 
