@@ -12,17 +12,17 @@ Define Parameters
 
 '''experiment parameters'''
 trial_names = ['groupA','groupB'] # Specfies what each trial is running - e.g. altered number of participants
-n_samples = 200  #for HDDM fitting, put this to 5000 for final run
+n_samples = 5000  #for HDDM fitting, put this to 5000 for final run
 #
 ##
 ''' ------------------- usually only these change between runs ---- '''
-n_subjects = [1000] # e.g. [10,20,30,40,50,75,150] # n_participants in each experiment
+n_subjects = [500] # e.g. [10,20,30,40,50,75,150] # n_participants in each experiment
 drift_b=[1,1] #e.g. [1,1.05,1.1,1.15,1.2] #range of drift in 2nd group
 drift_a=np.ones(len(drift_b)) # assume group a is baseline, with drift of 1 in each condition. Drift of 1->0.85% accuracy. ASSUME GROUP B BETTER IF AT ALL
 n_experiments = 1  # Number of simulated experiments  - make this arbitrary large for final run
 trials = 40 # trial per participants
 a_param=[2, 2] #boundary  for group A group B
-suffix='SATO_t40_highvar2a' 
+suffix='SATO_t40_final' #3h25m on cluster
 ''' ------------------- ------------------------------------------ '''
 ##
 #
@@ -38,12 +38,12 @@ sz_param=0
 st_param=0
 paramsA={'a':a_param[0], 't':t_param, 'z':z_param, 'sv':sv_param, 'sz':sz_param, 'st':st_param} # Parameters specified again
 paramsB={'a':a_param[1], 't':t_param, 'z':z_param, 'sv':sv_param, 'sz':sz_param, 'st':st_param} # Parameters specified again
-intersubj_vars=[0.05,0.5] # [intersubj_drift_var,intersubj_boundary_var]
+intersubj_vars=[0,1] # [intersubj_drift_var,intersubj_boundary_var]
 
 
 paramsfile="params_"+suffix + ".txt"
 print("saving parameters in params_" + paramsfile)
-os.system("sed -n 8,44p run_simulation_SATO.py > " + paramsfile)
+os.system("sed -n 8,46p run_simulation_SATO.py > " + paramsfile)
 
 print("Number of simulated experiments = " + str(len(drift_b)*len(n_subjects)*n_experiments))
 
