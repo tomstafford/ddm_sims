@@ -1,6 +1,8 @@
 # ddm_sims
 *Simulating decision making data and parameter recovery*
 
+[![DOI](https://zenodo.org/badge/106810105.svg)](https://zenodo.org/badge/latestdoi/106810105)
+
 ## Workflow/file descriptions
 
 ### Folders
