@@ -5,7 +5,6 @@
 
 ### Folders
 
-/attic - old stuff we can probably forget about 
 
 /data - simulations results (raw outputs)
 
@@ -16,8 +15,6 @@
 /psychonomics - files for International Psychonomics Society Meeting in Amsterdam, 2018
 
 /write_up - paper describing project
-
-/xspl_power_analyser - shiny app
 
 ### Files
 
