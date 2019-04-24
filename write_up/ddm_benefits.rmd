@@ -21,14 +21,11 @@ affiliation:
   - id            : "1"
     institution   : "Department of Psychology, University of Sheffield"
   - id            : "2"
-    institution   : "School of Psychological and Cognitive Sciences, Peking University"
+    institution   : "Department of Psychosocial Science, University of Bergen"
   - id            : "3"
     institution   : "Research Computing, University of Leeds"
   - id            : "4"
     institution   : "Research Software Engineering, University of Sheffield"
-
-author_note: |
-  Address correspondance to t.stafford@sheffield.ac.uk
 
 abstract: |
   Across diverse subfields experimentalists collect response time and accuracy data. Inter-subject and     inter-group speed-accuracy trade-offs (SATOs) are a well-known possibility which are often inadequately addressed. Many experiments focus on a single variable (e.g. psychophysics paradigms analysing accuracy alone), or involve a suboptimal analytic correction (e.g. dividing accuracy by response time). Models of decision making, such as the drift diffusion model (DDM), provide a principled account of the decision making process, allowing the recovery of SATO-unconfounded decision parameters from observed behavioural variables. For plausible parameters of a typical between-groups experiment we simulate experimental data, for both real and null group differences, and for both systematic and null SATOs, and fit the DDM. This exercise allows us to make a number of concrete recommendations for experimentalists: we show, in terms of reduction of required sample size, how decision modelling allows more efficient data collection for set statistical power; we confirm and depict the non-linear speed-accuracy relation; we show how much more sensitive accuracy is as a measure than response time.
@@ -46,9 +43,9 @@ footnotelist      : no
 lineno            : no
 mask              : no
 
-class             : "doc"
+class             : "jou"
 output            : papaja::apa6_pdf
-#output            : html_document
+#output            : bookdown::html_document2
 
 ---
 
@@ -84,7 +81,7 @@ The efficiency score shares with other recent suggestions for accounting for SAT
 
 The unprincipled combination of speed and accuracy measures becomes an urgent issue when considered in the  context of widespread questions surrounding the reliability of the literature in psychology. Established results fail to replicate, or replicate with substantially reduced effect sizes [@open2015estimating;@pashler2012editors].
 
-Low statistical power has been a persistent problem across many areas of psychology and cognitive neuroscience [@button2013power; @szucs2017empirical; @stanleymeta; @maxwell2004persistence; @sedlmeier1989studies; @lovakov_agadullina_2017], including, but not limited to, research areas which are bound by costly methods or hard-to-reach populations [@geuter2018effect; @bezeau2001statistical; @cohen1962statistical]. This, combined with factors such as analytic flexibility [@simmons2011false; @silberzahn2017many] --- which can only be increased by a lack of recognition of any optimal analysis method --- has led to a widespread lack of faith in many published results [@ioannidis2005most].
+Low statistical power has been a persistent problem across many areas of psychology and cognitive neuroscience [@button2013power; @szucs2017empirical; @stanleymeta; @maxwell2004persistence; @sedlmeier1989studies; @lovakov_agadullina_2017], including, but not limited to, research areas which are bound by costly methods or hard-to-reach populations [@geuter2018effect; @bezeau2001statistical; @cohen1962statistical]. This, combined with factors such as analytic flexibility [@simmons2011false; @silberzahn2017many] --- which can only be increased by a lack of recognition of any optimal analysis method --- has led to a widespread loss of faith in many published results [@ioannidis2005most].
 
 Statistical power is defined with respect to the variability and availability of data, as well as the analysis proposed. For a set experimental design, an obvious candidate for increasing statistical power is to increase sample size, but this is not always easy. Each additional participant costs additional time, money and resources. This is especially true in the case of expensive methods, such as fMRI, or special populations which may be hard to recruit. More sensitive measures also increase statistical power: lower measurement error will tend to reduce variability so that the same mean differences produce larger observed effect sizes.
 
@@ -104,16 +101,16 @@ While debate continues around the exact specification of the decision model whic
 knitr::include_graphics("figs/zhang_fig1.png")
 ```
 
-For our purposes, the value of these decision models is that they provide a principled reconciliation of speed and accuracy data. Within this framework these observed behavioural measures reflect the hidden parameters of the decision model, most important of which (for our purposes) are the drift rate and boundary separation, which reflect the strength of evidence accumulation (reflecting participant sensitivity/stimulus salience) and the decision boundary (reflecting the conservativeness of the participant's decision criterion; higher boundaries produce slower but more accurate responses).
+For our purposes, the value of these decision models is that they provide a principled reconciliation of speed and accuracy data. Within this framework these observed behavioural measures reflect the hidden parameters of the decision model, most important of which are the drift rate and boundary separation, which reflect the strength of evidence accumulation (reflecting participant sensitivity/stimulus salience) and the decision boundary (reflecting the conservativeness of the participant's decision criterion; higher boundaries produce slower but more accurate responses).
 
-By fitting the DDM we can deconfound the observed behavioural variables --- speed and accuracy --- and recover the putative generating parameters of the decision --- drift and boundary separation. In principle, this allows a more sensitive measure of participant capability (reflected in the drift parameter). Drift is a more sensitive measure because a) it is estimated using both speed *and* accuracy and b) it is isolated from the effect of different participant response thresholds (which are reflected in the boundary parameter).
+By fitting the DDM to our data we can deconfound the observed behavioural variables --- speed and accuracy --- and recover the putative generating parameters of the decision --- drift and boundary separation. In principle, this allows a more sensitive measure of participant capability (reflected in the drift parameter). Drift is a more sensitive measure because a) it is estimated using both speed *and* accuracy and b) it is isolated from the effect of different participant response thresholds (which are reflected in the boundary parameter).
 
-Previous authors have established the in-principle gains of this approach. Within a psychophysics framework, @stone2014using extended @palmer2005effect's decision model to show that response time and accuracy contain different, but possibly overlapping, components of Shannon information about the perceived stimulus. If these components do not overlap (as suggested by Stone, in preparation) then combining response time and accuracy data should provide better estimates of key parameters which govern the decision process than relying on either response time or accuracy alone. Previous authors have shown for specific paradigms and decisions that using decision models confers benefits beyond relying on speed, accuracy or some sub-optimal combination of the two, especially in the case of speed-accuracy trade-offs [e.g. @zhang2014dissociable; @park2015approximate]. Our purpose here is not to make a theoretical innovation in decision modelling, but to use established decision models to demonstrate and quantify the benefits of decision modelling for experimentalists.
+Previous authors have established the in-principle gains of this approach. Within a psychophysics framework, @stone2014using extended @palmer2005effect's decision model to show that response time and accuracy contain different, but possibly overlapping, components of Shannon information about the perceived stimulus. If these components do not overlap (as suggested by Stone, in preparation) then combining response time and accuracy data should provide better estimates of key parameters which govern the decision process than relying on either response time or accuracy alone. Previous authors have shown for specific paradigms and decisions that using decision models confers benefits beyond relying on speed, accuracy or some sub-optimal combination of the two, especially in the case of speed-accuracy trade-offs [@zhang2014dissociable; @park2015approximate]. Our purpose here is not to make a theoretical innovation in decision modelling, but to use established decision models to demonstrate and quantify the benefits of decision modelling for experimentalists.
 
 
 # Method
 
-The broad approach is to consider a simple standard experimental design: a between groups comparison each group contains a number of participants who complete a number of decision trials, which provide both response time and accuracy data. We simulate data for true and null differences in drift (sensitivity) between the groups, as well as true and null differences in boundary (SATO) between the groups. By varying the number of simulated participants we generate a fixed number of `scenarios' defined by true/null effects in sensitivity, true/null SATOs and experimental sample size. For each scenario we inspect the behavioural measures to see how sensitive and specific they are to detecting true group differences. We also fit the DDM and estimate the participant drift parameters, similarly asking how sensitive and specific estimates of drift are to true group differences in drift. An overview of the method is provided in Figure \@ref(fig:DDMprocess).
+The broad approach is to consider a simple standard experimental design: a between groups comparison, where each group contains a number of participants who complete a number of decision trials, providing both response time and accuracy data. We simulate data for true and null differences in drift (sensitivity) between the groups, as well as true and null differences in boundary (SATO) between the groups. By varying the number of simulated participants we generate a fixed number of `scenarios' defined by true/null effects in sensitivity, true/null SATOs and experimental sample size. For each scenario we simulate many virtual experiments andinspect the behavioural measures to see how sensitive and specific they are to detecting true group differences. We also fit the DDM and estimate the participant drift parameters, similarly asking how sensitive and specific estimates of drift are to true group differences in drift. An overview of the method is provided in Figure \@ref(fig:DDMprocess).
 
 ```{r DDMprocess, fig.cap="Overview of method", fig.align="center", out.width="75%"}
 knitr::include_graphics("figs/DDM_process_less.png")
@@ -121,25 +118,19 @@ knitr::include_graphics("figs/DDM_process_less.png")
 
 ## Decision modelling
 
-To generate simulated response data, and we use the Hierarchical Drift Diffusion Model [HDDM, @wiecki2013hddm]. This toolbox can also perform model fitting, which uses Bayesian estimation methods to simultaneously fit individual decision parameters and the group distributions from which they are drawn. 
+To generate simulated response data, we use the Hierarchical Drift Diffusion Model [HDDM, @wiecki2013hddm]. This toolbox can also perform model fitting, which uses Bayesian estimation methods to simultaneously fit individual decision parameters and the group distributions from which they are drawn. 
 
 While the HDDM offers a principled and comprehensive model fitting approach, it is computationally expensive. An alternative model fitting method, the EZ-DDM [@wagenmakers2007ez] offers a simple approximation, fitting a decision model with a smaller number of parameters using an analytic method which is computationally cheap. Furthermore, the EZ-DDM has been shown to match the full DDM for a range of situations [@van2017ez].
 
-For the model fitting presented here (Figures \ref(fig:vanilla) - \ref(fig:SATOdprime)), we use the EZ-DDM, although we have verified that the results are qualitatively similar using the HDDM and the fast-ddm [@voss2007fast], a third model fitting framework, so we believe that these results do not depend on the particular decision model deployed from the broad class of accumulator models. 
+For the model fitting presented here (Figures \@ref(fig:vanilla) - \@ref(fig:SATOdprime)), we use the EZ-DDM, although we have verified that the results are qualitatively similar using the HDDM and the fast-ddm [@voss2007fast], a third model fitting framework, so we believe that these results do not depend on the particular decision model deployed from the broad class of accumulator models. 
 
-Obviously, where we wish to simulate many thousands of independent experiments there are significant speed gains from parallelisation. Parallalisation was done by Mike Croucher, and the code run on University of Sheffield High Performance Computing cluster. A sense of the value of parallelisation can be had by noting the the data shown in, for example, Figure \ref(fig:SATOdprime) would have taken around 1 calendar month to generate on a single high performance machine, even though they use the computationally `cheap' EZ-DDM method. Python code for running the simulations, as well as the output data, figures and manuscript preparation files, is here <https://github.com/tomstafford/ddm_sims>.
-
----
-#Should be zenado link With DOI https://zenodo.org/
----
-
-
+Obviously, where we wish to simulate many thousands of independent experiments there are significant speed gains from parallelisation. Parallalisation was done by Mike Croucher, and the code run on University of Sheffield High Performance Computing cluster. A sense of the value of parallelisation can be had by noting the the data shown in, for example, Figure \@ref(fig:SATOdprime) would have taken around 1 calendar month to generate on a single high performance machine, even though they use the computationally `cheap' EZ-DDM method. Python code for running the simulations, as well as the output data, figures and manuscript preparation files, is here <http://doi.org/10.5281/zenodo.2648995>.
 
 ## Analysis
 
-Because we are not generating an analytic solution we cannot claim that our findings are true for all situations. Our aim is merely to show that for some reasonable choices of DDM parameters using decision modelling is a superior approach to analysing response time or accuracy alone or combining them in any suboptimal way.
+Because we are not generating an analytic solution we cannot claim that our findings are true for all situations. Our aim is merely to show that, for some reasonable choices of DDM parameters, using decision modelling is a superior approach to analysing response time or accuracy alone, and to quantify the gain in statistical power.
 
-To be able to make this claim of relevance of our simulations to typical psychology experiments we need to be able to justify that our parameter choice is plausible for a typical psychology experiment. In order to establish this we pick parameters which generate response times of the order of 1 second and accuracy of the order 90%.[^p2]. Each participant contributes 40 decision (40 trials) to each experiment. Parameters for drift and boundary separation are defined for the group and individual participant values for these parameters are drawn from the group parameters with some level of variability (and, in the case of true effects, a mean difference between the group values). 
+To be able to make this claim of relevance of our simulations to typical psychology experiments we need to be able to justify that our parameter choice is plausible for a typical psychology experiment. In order to establish this we pick parameters which generate response times of the order of 1 second and accuracy of the order 90%.[^p2]. Each participant contributes 40 decisions (40 trials) to each experiment. Parameters for drift and boundary separation are defined for the group and individual participant values for these parameters are drawn from the group parameters with some level of variability (and, in the case of true effects, a mean difference between the group values). 
 
 To illustrate this, we show in Figure \@ref(fig:SATOdirect) a direct visualation of the speed-accuracy trade-off, by taking the base parameters we use in our simulated experiments and generating a single participant's average response time and accuracy, using 1000 different boundary separation values. This shows the effect of varying boundary separation alone, while all other decision parameters are stable. 
 
@@ -157,9 +148,7 @@ For each scenario we simulate a large number of experiments, with participant pa
 
 The drift and boundary parameters for each each simulated participant are drawn from declared group means, meaning that the true difference between groups can be expressed in terms of Cohen's d effect size --- the mean difference between the groups standardised by the within group variability.
 
-For the observed variables, response time and accuracy, the effect sizes can only be observed, not declared, since these arise from the interaction of the DDM parameters and the DDM model which generates responses. The declared group difference in drift rate produces the observed effect size in response time and accuracy (which differ from each other), depending on both the level of noise in each simulated experiment, and the experiment design - specifically on the number of trials per participant.
-
-Experiment designs which have a higher number of trials per participant effectively sample the true drift rate more accurately, and so have effect sizes for response time and accuracy which are closer to the 'true', declared, effect size in drift rate.
+For the observed variables, response time and accuracy, the effect sizes can only be observed, not declared, since these arise from the interaction of the DDM parameters and the DDM model which generates responses. The declared group difference in drift rate produces the observed effect size in response time and accuracy (which differ from each other), depending on both the level of noise in each simulated experiment, and the experiment design - particularly on the number of trials per participant. Experiment designs which have a higher number of trials per participant effectively sample the true drift rate more accurately, and so have effect sizes for response time and accuracy which are closer to the 'true', declared, effect size in drift rate.
 
 This issue sheds light on why decision modelling is more effective than analysing response time or accuracy alone (because it recovers the generating parameter, drift, which is more sensitive to group differences), and why there are differences in power between measuring response time and accuracy (because these variables show different observed effect sizes when generated by the same true different in drift rates). Figure \@ref(fig:effectsizes) shows how declared differences in drift translate into observed effect sizes for response time and accuracy.
 
@@ -173,7 +162,7 @@ Statistical power is the probability of your measure reporting a group differenc
 
 For analysing situations where only the drift differs between two groups we would not expect any significant variations in false alarm rate. However, when considering speed-accuracy trade-off changes between groups (with or without drift rate differences as well) the situation is different. This means that it is possible to get false positives in tests of a difference in drifts between groups because of SATOs. Most obviously, if a SATO means one group prioritises speed over accuracy, analysis of response time alone will mimic an enhanced drift rate, but analysis of accuracy alone will mimic degraded drift rate. Ideally the DDM will be immune to any distortion of estimates of drift rates, but that is what we have set out to demonstrate so we should not assume.
 
-The consequence of this is that it makes sense to move calculating measure sensitivity, accounting for both the false alarm rate, as well as the hit rate. A principled way for combining false alarm and hit rate into a single metric is d' ("d prime"), which gives an overall sensitivity of the test, much as we would calculate the sensitivity independent of bias for an observer in a psychophysics experiment [@green1966signal]
+The consequence of this is that it makes sense to calculate the overall sensitivity, accounting for both the false alarm rate, as well as the hit rate. A principled way for combining false alarm and hit rate into a single metric is d' ("d prime"), which gives an overall sensitivity of the test, much as we would calculate the sensitivity independent of bias for an observer in a psychophysics experiment [@green1966signal].
 
 
 # Results
@@ -182,7 +171,7 @@ The results shown here support our central claim that decision modelling can hav
 
 ## Without Speed-Accuracy Trade-offs
 
-For an idea of the main implications, it is sufficient to plot a slice of the data when the difference in drift is a Cohen's d of 2. Recall, from Figure \@ref(fig:effectsizes) above, that although this is a large difference in terms of the generating parameter, drift, this translates into small observed effect sizes in accuracy and response time. 
+For an idea of the main implications, it is sufficient to plot a slice of the data when the difference in drift is a Cohen's d of 2. Recall, from Figure \@ref(fig:effectsizes) above, that although this is a large difference in terms of the generating parameter, drift, this translates into small observed effect sizes in accuracy and response time (approximately 0.3 - 0.4, reflecting `medium' effect sizes).
 
 Figure \@ref(fig:vanilla), right, shows how sample size and hit rate interact for the different measures. The results will be depressingly familiar to any experimentalist who has taken power analysis seriously --- a sample size far larger than that conventionally recruited is required to reach adequate power levels for small/medium group differences.
 
@@ -201,13 +190,13 @@ knitr::include_graphics("figs/NOSATO_hit_and_FA.png")
 
 From this figure we can read off the number of participants per group required to reach the conventional 80% power level (equivalent to hit rate of 0.8, if we assume a constant false positive rate). For this part of the parameter space, for this size of difference between groups in drift, and no speed-accuracy trade-off, ~140 participants are required to achieve 80% power if the difference between groups is tested on the speed of correct responses only. If the difference between groups is tested on the accuracy rate only then ~115 participants per group are required. If speed and accuracy are combined using decision modelling, and difference between groups tests on the recovered drift parameters then we estimate that ~55 participants per group are required for 80% power. An experimentalist who might have otherwise had to recruit 280 (or 230) participants could therefore save herself (and her participants) significant trouble, effort and cost by deploying decision modelling, recruiting half that sample size and still enjoying an increase in statistical power to detect group differences.
 
-Figure \@ref(fig:vanilla), left, shows the false alarm rate. When the difference in drifts is a Cohen's d of 0, i.e. no true difference, the t-tests on response time and accuracy both generate false alarm rates at around the standard alpha level of $0.05$
+Figure \@ref(fig:vanilla), left, shows the false alarm rate. When the difference in drifts is a Cohen's d of 0, i.e. no true difference, the t-tests on response time and accuracy both generate false alarm rates at around the standard alpha level of $0.05$.
 
 <!-- ```{r vanillaFAs, fig.cap="Simulated experiment sample size against false positive rate (effect size = 0 cohen'd d for drift parameter)", fig.align="center", out.width='68%'} -->
 <!-- knitr::include_graphics("figs/NOSATO_FalseAlarms.png") -->
 <!-- ``` -->
 
-Figure \@ref(fig:vanilladprime) shows the measure sensitivity, d' for each sample size. In effect, this reflects the hit rate (Figure \@ref(fig:vanillahits)) corrected for fluctuations in false alarm rate (Figure \@ref(fig:vanillaFAs)). This correction will be more important when their are systematic variations in false positive rate due to SATOs
+Figure \@ref(fig:vanilladprime) shows the measure sensitivity, d' for each sample size. In effect, this reflects the hit rate (Figure \@ref(fig:vanilla), left) corrected for fluctuations in false alarm rate (Figure \@ref(fig:vanilla), right). This correction will be more important when their are systematic variations in false positive rate due to SATOs. Note that the exact value of d' is sensitive to small fluctions in the proportions of hits and false alarms observed in the simulations, and hence the d' curve are visably kinked despite being derived from the apparently smooth hit and false alarm curves.
 
 ```{r vanilladprime, fig.cap="Simulated experiment sample size against d' (for effect size of 2 vs 0  cohen'd d for drift parameter)", fig.align="center", out.width='68%'}
 knitr::include_graphics("figs/NOSATO_dprime.png")
@@ -237,8 +226,7 @@ This, however, is an artifact of the SATO. If the boundary shift had been in the
 
 When using the drift parameter as a measure the SATO between the groups does not induce false alarms. The accuracy measure is insensitive so also doesn't suffer (but would if the boundary shift was in the opposite direction). The response time measure is catastrophically sensitive to false alarms, approaching 100% false alarm rate with larger samples.
 
-
-Combining the hit rate and the false alarm rate to calculate d', and so see measure sensitivity, Figure \@ref(fig:SATOdprime). 
+Figure \@ref(fig:SATOdprime) shows d', which combines hit rate and the false alarm rate, shows that the best measure overall is drift rate, as is the no-SATO case.
 
 ```{r SATOdprime, fig.cap="Simulated experiment sample size against d' (effect size = 2 cohen's d for drift parameter, 2 for boundary parameter)", fig.align="center", out.width='68%'}
 knitr::include_graphics("figs/SATO_dprime.png")
@@ -252,17 +240,17 @@ We have shown the benefits of fitting response time and accuracy data with stand
 
 ## Qualifications
 
-The results we showcase here and in the data explore hold only for the parameter regime chosen. We have not analytically proved that parameter recovery with the DDM will always provide a statistical power gain. We have chosen a simple experimental design, with a plausible trial numbers per participant and decision parameters which generate realistic values for speed and accuracy of responses, but it is possible that for smaller effects, at the boundaries of maximum or minimum speed or accuracy, and/or with higher within and between participant noise, that decision modelling may not have the benefits depicted here.
+The results we showcase here and in the data explorer hold only for the parameter regime chosen. We have not analytically proved that parameter recovery with the DDM will always provide a statistical power gain. We have chosen a simple experimental design, with a plausible trial numbers per participant and decision parameters which generate realistic values for speed and accuracy of responses, but it is possible that for smaller effects, at the boundaries of maximum or minimum speed or accuracy, and/or with higher within and between participant noise, that decision modelling may not have the benefits depicted here (although it may also have greater benefits than those depicted here as well).
 
 We have choose not to explore a within-participants design because the issue of systematically different speed-accuracy trade-offs between conditions seems, *prima facie*, less likely. For between groups designs we know of several prominent cases where systematic SATOs confounded conclusions. For example @pirrone2017understanding found that an apparent impairment of perceptual judgement among Autism Spectrum Disorder (ASD) participants could be attributed to a difference in their SATO. The ASD group responded more conservatively, but decision modelling showed their had equivalent sensitivity to the non-ASD group. @ratcliff2006aging found an analogous result for young vs old participants on perceptual discrimination and recognition memory tasks.
 
-As well as occupying a particular point in the parameter space of decision models, our results are also generated using a particular model and model fitting approach [the EZ-DDM, @wagenmakers2007ez], although we have verified that the same qualitative pattern can be produced by alternative approaches [@wiecki2013hddm,@voss2007fast]. Additionally, it is worth noting that for some parameterisations several prominent decision models are equivalent [@bogacz2006physics]. A recent collaborative analysis project found that despite a large diversity of fitting methods common inferences where made across different decision models [@dutilh2016quality]. A reasonable conclusion from this project was that in many circumstances the simple models should be preferred [@lerche2016model]. @ratcliff2015individual claims that hierarchical Bayesian methods of fitting, as used by the HDDM are best, at least for individual difference investigations (although see @jones2014unfalsifiability who claim that many variants of the DDM cannot be successfully distinguished by empirical measurement).
+As well as occupying a particular point in the parameter space of decision models, our results are also generated using a particular model and model fitting approach [the EZ-DDM, @wagenmakers2007ez], although we have verified that the same qualitative pattern can be produced by alternative approaches [@wiecki2013hddm;@voss2007fast]. Additionally, it is worth noting that for some parameterisations several prominent decision models are equivalent [@bogacz2006physics]. A recent collaborative analysis project found that despite a large diversity of fitting methods common inferences where made across different decision models [@dutilh2016quality]. A reasonable conclusion from this project was that in many circumstances the simple models should be preferred [@lerche2016model]. @ratcliff2015individual claims that hierarchical Bayesian methods of fitting, as used by the HDDM are best, at least for individual difference investigations (although see @jones2014unfalsifiability who claim that many variants of the DDM cannot be successfully distinguished by empirical measurement).
 
 
 
 ## Wider context
 
-As well as power gains, and protection against SATO confounds, decision modelling has other benefits to offer the experimentalist. It allows differences between participants or groups to be localized to particular components of the decision process. Decision modelling, since it relies on the distribution of responses rather than just the means, can also reveal underlying differences when single variables (e.g. response time) are stable [@white2010using]
+As well as power gains, and protection against SATO confounds, decision modelling has other benefits to offer the experimentalist. It allows differences between participants or groups to be localized to particular components of the decision process. Decision modelling, since it relies on the distribution of responses rather than just the means, can also reveal underlying differences when single variables (e.g. response time) are stable [@white2010using].
 
 There is a growing awareness of the limitations of studying only speed or accuracy alone [@oppenheim2017blind]. A recent meta-analysis confirms a low correlation between speed and accuracy costs in psychological tasks [@hedgelow]. @vandierendonck2017comparison compares seven model-free transformations which combine reaction time and accuracy, but finds none unambiguously superior either to the others or to inspecting raw reaction time and accuracy.
 
@@ -279,7 +267,7 @@ A recent paper [@hedge2018mapping] used a comparable simulation based approach r
 
 ## Getting started with decision modelling
 
-For those who wish to apply decision models to their data have a range of tutorials available [@voss2013diffusion, @forstmann2016sequential], as well as statistical computing packages which support model fitting [@wiecki2013hddm,@voss2007fast]
+For those who wish to apply decision models to their data have a range of tutorials available [@voss2013diffusion; @forstmann2016sequential], as well as statistical computing packages which support model fitting [@wiecki2013hddm; @voss2007fast]
 
 
 # Acknowledgements
